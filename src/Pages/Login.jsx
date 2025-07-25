@@ -23,6 +23,8 @@ const Login = () => {
       
       // Role-based redirect logic
       const userRole = response.user?.legacyRole || response.user?.role?.name || response.user?.role
+      console.log('User data:', response.user)
+      console.log('User role:', userRole)
       
       if (['admin', 'super_admin', 'editor', 'author', 'contributor'].includes(userRole)) {
         navigate('/dashboard')
