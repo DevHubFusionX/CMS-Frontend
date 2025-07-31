@@ -1,5 +1,8 @@
 /* ===== MAIN STYLESHEET ===== */
 
+/* Import rare font family */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Fira+Code:wght@300..700&display=swap');
+
 /* Import Tailwind CSS */
 @import 'tailwindcss';
 
@@ -43,4 +46,14 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-primary) var(--color-base-200);
+}
+
+/* Global font family with rare fonts */
+* {
+  font-family: 'Crimson Pro', 'Palatino Linotype', 'Book Antiqua', 'URW Palladio L', serif;
+}
+
+/* Monospace elements use rare coding font */
+code, pre, .font-mono {
+  font-family: 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
