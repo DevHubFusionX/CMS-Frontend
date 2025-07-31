@@ -14,12 +14,12 @@ const PreviewPost = React.lazy(() => import("./Pages/Posts").then(module => ({ d
 const SubscriberHome = React.lazy(() => import("./Pages/SubscriberHome"));
 const SubscriberDashboard = React.lazy(() => import("./Pages/SubscriberDashboard"));
 
-// Keep auth pages as regular imports for faster login
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import VerifyOTP from "./Pages/VerifyOTP";
-import ForgotPassword from "./Pages/ForgotPassword";
-import ResetPassword from "./Pages/ResetPassword";
+// Lazy load all remaining pages
+const Login = React.lazy(() => import("./Pages/Login"));
+const Register = React.lazy(() => import("./Pages/Register"));
+const VerifyOTP = React.lazy(() => import("./Pages/VerifyOTP"));
+const ForgotPassword = React.lazy(() => import("./Pages/ForgotPassword"));
+const ResetPassword = React.lazy(() => import("./Pages/ResetPassword"));
 
 
 import {
