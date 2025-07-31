@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 
 /**
  * VersionHistory component displays and manages content revisions
- * Works with TinyMCE autosave feature to show version history
+ * Works with TinyMCE autosave feature with theme support
  */
 const VersionHistory = ({ contentId, onRestoreVersion }) => {
   const [versions, setVersions] = useState([]);
@@ -52,37 +52,47 @@ const VersionHistory = ({ contentId, onRestoreVersion }) => {
   };
 
   if (loading) {
-    return <div className="p-4 text-center">Loading version history...</div>;
+    return <div className="p-4 text-center" style={{color: 'var(--color-base-content)'}}>Loading version history...</div>;
   }
 
   if (versions.length === 0) {
-    return <div className="p-4 text-center">No previous versions found</div>;
+    return <div className="p-4 text-center" style={{color: 'var(--color-base-content)'}}>No previous versions found</div>;
   }
 
   return (
-    <div className="version-history bg-gray-800 text-white rounded-md p-4">
+    <div className="version-history rounded-md p-4 border" style={{
+      backgroundColor: 'var(--color-base-200)',
+      borderColor: 'var(--color-base-300)',
+      color: 'var(--color-base-content)'
+    }}>
       <h3 className="text-lg font-medium mb-4">Version History</h3>
       
       <div className="versions-list space-y-2 max-h-80 overflow-y-auto">
         {versions.map((version, index) => (
           <div 
             key={version.id}
-            className={`version-item p-2 rounded cursor-pointer hover:bg-gray-700 flex justify-between items-center ${
-              selectedVersion === version.id ? 'bg-blue-900' : ''
-            }`}
+            className="version-item p-2 rounded cursor-pointer flex justify-between items-center"
+            style={{
+              backgroundColor: selectedVersion === version.id ? 'var(--color-primary)' : 'var(--color-base-100)',
+              color: selectedVersion === version.id ? 'var(--color-primary-content)' : 'var(--color-base-content)'
+            }}
             onClick={() => setSelectedVersion(version.id)}
           >
             <div>
               <div className="text-sm font-medium">
                 {index === 0 ? 'Current Version' : `Version ${versions.length - index}`}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-xs opacity-70">
                 {format(version.date, 'MMM d, yyyy h:mm a')}
               </div>
             </div>
             
             <button
-              className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700"
+              className="px-3 py-1 text-xs rounded"
+              style={{
+                backgroundColor: 'var(--color-accent)',
+                color: 'var(--color-accent-content)'
+              }}
               onClick={(e) => {
                 e.stopPropagation();
                 handleRestore(version);

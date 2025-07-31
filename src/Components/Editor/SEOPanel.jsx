@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * SEOPanel component provides SEO analysis and recommendations for content
- * Works alongside the TinyMCE editor
+ * Works alongside the TinyMCE editor with theme support
  */
 const SEOPanel = ({ content, title, keyword }) => {
   const [seoScore, setSeoScore] = useState(0);
@@ -110,7 +110,11 @@ const SEOPanel = ({ content, title, keyword }) => {
   };
 
   return (
-    <div className="seo-panel bg-gray-800 text-white rounded-md p-4">
+    <div className="seo-panel rounded-md p-4 border" style={{
+      backgroundColor: 'var(--color-base-200)',
+      borderColor: 'var(--color-base-300)',
+      color: 'var(--color-base-content)'
+    }}>
       <h3 className="text-lg font-medium mb-2">SEO Analysis</h3>
       
       {isAnalyzing ? (
@@ -120,20 +124,23 @@ const SEOPanel = ({ content, title, keyword }) => {
           <div className="seo-score mb-4">
             <div className="flex items-center justify-between">
               <span>SEO Score:</span>
-              <span className={`font-bold ${
-                seoScore >= 70 ? 'text-green-400' : 
-                seoScore >= 40 ? 'text-yellow-400' : 'text-red-400'
-              }`}>
+              <span className="font-bold" style={{
+                color: seoScore >= 70 ? 'var(--color-success)' : 
+                       seoScore >= 40 ? 'var(--color-warning)' : 'var(--color-error)'
+              }}>
                 {seoScore}/100
               </span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2 mt-1">
+            <div className="w-full rounded-full h-2 mt-1" style={{
+              backgroundColor: 'var(--color-base-300)'
+            }}>
               <div 
-                className={`h-2 rounded-full ${
-                  seoScore >= 70 ? 'bg-green-400' : 
-                  seoScore >= 40 ? 'bg-yellow-400' : 'bg-red-400'
-                }`}
-                style={{ width: `${seoScore}%` }}
+                className="h-2 rounded-full"
+                style={{ 
+                  width: `${seoScore}%`,
+                  backgroundColor: seoScore >= 70 ? 'var(--color-success)' : 
+                                 seoScore >= 40 ? 'var(--color-warning)' : 'var(--color-error)'
+                }}
               ></div>
             </div>
           </div>
@@ -141,12 +148,14 @@ const SEOPanel = ({ content, title, keyword }) => {
           <div className="recommendations">
             <h4 className="text-sm font-medium mb-2">Recommendations:</h4>
             {recommendations.length === 0 ? (
-              <p className="text-green-400 text-sm">Great job! Your content is well-optimized.</p>
+              <p className="text-sm" style={{color: 'var(--color-success)'}}>Great job! Your content is well-optimized.</p>
             ) : (
               <ul className="space-y-2">
                 {recommendations.map((rec, index) => (
                   <li key={index} className="text-sm flex items-start">
-                    <span className={`mr-2 ${rec.type === 'warning' ? 'text-yellow-400' : 'text-red-400'}`}>
+                    <span className="mr-2" style={{
+                      color: rec.type === 'warning' ? 'var(--color-warning)' : 'var(--color-error)'
+                    }}>
                       {rec.type === 'warning' ? '⚠️' : '❌'}
                     </span>
                     <span>{rec.message}</span>

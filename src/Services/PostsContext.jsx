@@ -14,7 +14,7 @@ export const PostsProvider = ({ children }) => {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const userRole = user?.role || user?.legacyRole;
+      const userRole = user?.legacyRole || user?.role?.name || user?.role;
       const response = await postsService.getAllPostsIncludingDrafts(userRole);
       setPosts(response.data);
       setError(null);

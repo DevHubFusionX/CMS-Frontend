@@ -1,5 +1,6 @@
-import React from 'react';
-import EditorToolbar from './EditorToolbar';
+import React, { memo } from 'react';
+import PostEditorToolbar from './PostEditorToolbar';
+import AIAssistant from './AIAssistant';
 import TitleField from './components/TitleField';
 import ExcerptField from './components/ExcerptField';
 import FeaturedImageField from './components/FeaturedImageField';
@@ -7,6 +8,7 @@ import CategoriesField from './components/CategoriesField';
 import TagsField from './components/TagsField';
 import ContentEditor from './components/ContentEditor';
 import { usePostEditor } from './hooks/usePostEditor';
+import { useAutoSave } from '../../Hooks/useAutoSave';
 
 const PostEditor = ({
   post = {
@@ -19,6 +21,7 @@ const PostEditor = ({
     status: 'draft',
     slug: ''
   },
+  postId = null,
   onSave,
   onPublish,
   onPreview
@@ -38,6 +41,9 @@ const PostEditor = ({
     handleTagChange,
     validateForm
   } = usePostEditor(post);
+
+  // Auto-save functionality
+  useAutoSave(postData, postId, true);
 
   const handleSave = async () => {
     if (!validateForm()) return;
@@ -69,9 +75,24 @@ const PostEditor = ({
     onPreview(postData);
   };
 
+  const handleAIContentGenerated = (generatedContent) => {
+    if (generatedContent.title && !postData.title) {
+      handleChange({ target: { name: 'title', value: generatedContent.title } });
+    }
+    if (generatedContent.content) {
+      handleContentChange(generatedContent.content);
+    }
+    if (generatedContent.excerpt && !postData.excerpt) {
+      handleChange({ target: { name: 'excerpt', value: generatedContent.excerpt } });
+    }
+  };
+
   return (
-    <div className="post-editor">
-      <EditorToolbar
+    <div className="post-editor p-6 rounded-lg" style={{
+      backgroundColor: 'var(--color-base-100)',
+      color: 'var(--color-base-content)'
+    }}>
+      <PostEditorToolbar
         onSave={handleSave}
         onPublish={handlePublish}
         onPreview={handlePreview}
@@ -80,7 +101,9 @@ const PostEditor = ({
         isPublishing={isPublishing}
       />
       
-      <div className="space-y-6">
+      <div className="space-y-6 mt-6">
+        <AIAssistant onContentGenerated={handleAIContentGenerated} />
+        
         <TitleField 
           value={postData.title}
           onChange={handleChange}
@@ -119,4 +142,4 @@ const PostEditor = ({
   );
 };
 
-export default PostEditor;
+export default memo(PostEditor);

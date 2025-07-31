@@ -53,6 +53,10 @@ export const NotificationProvider = ({ children }) => {
     return addNotification({ ...options, message, type: 'info' });
   }, [addNotification]);
 
+  const showNotification = useCallback((message, type = 'info', options = {}) => {
+    return addNotification({ ...options, message, type });
+  }, [addNotification]);
+
   const value = {
     notifications,
     addNotification,
@@ -61,6 +65,7 @@ export const NotificationProvider = ({ children }) => {
     error,
     warning,
     info,
+    showNotification,
   };
 
   return (

@@ -18,6 +18,7 @@ export const usePosts = () => {
           id: post._id || post.id,
           title: post.title,
           author: post.author?.name || 'Unknown Author',
+          authorId: post.author?._id || post.author?.id,
           status: post.status || 'draft',
           date: new Date(post.createdAt).toLocaleDateString()
         }));

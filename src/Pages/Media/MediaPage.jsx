@@ -48,7 +48,7 @@ const MediaPage = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-indigo-900/20">
+    <div className="min-h-screen" style={{backgroundColor: 'var(--color-base-100)'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-6 sm:space-y-8">
           <ModernMediaHeader 

@@ -5,15 +5,19 @@ const AppearanceSettings = ({ isDarkMode, onUpdate }) => {
   return (
     <>
       <div className="col-span-1 md:col-span-2">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Appearance Settings</h2>
-        <p className="text-sm text-gray-500 mb-6">Customize the look and feel of your dashboard.</p>
+        <h2 className="text-lg font-medium mb-4" style={{color: 'var(--color-base-content)'}}>Appearance Settings</h2>
+        <p className="text-sm mb-6" style={{color: 'var(--color-base-content)'}}>Customize the look and feel of your dashboard.</p>
       </div>
       
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 col-span-1 md:col-span-2">
+      <div className="rounded-xl border shadow-lg p-6 col-span-1 md:col-span-2 backdrop-blur-sm" style={{
+        backgroundColor: 'var(--color-base-200)',
+        borderColor: 'var(--color-base-300)',
+        background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+      }}>
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-md font-medium text-gray-900">Dark Mode</h3>
-            <p className="text-sm text-gray-500 mt-1">
+            <h3 className="text-md font-medium" style={{color: 'var(--color-base-content)'}}>Dark Mode</h3>
+            <p className="text-sm mt-1" style={{color: 'var(--color-base-content)'}}>
               Switch between light and dark theme for your dashboard.
             </p>
           </div>
@@ -24,19 +28,43 @@ const AppearanceSettings = ({ isDarkMode, onUpdate }) => {
         </div>
         
         <div className="mt-8 grid grid-cols-2 gap-4">
-          <div className={`p-4 rounded-lg border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className={`h-24 rounded-md mb-2 ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'}`}></div>
-            <div className={`h-4 w-3/4 rounded-md mb-2 ${isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}></div>
-            <div className={`h-4 w-1/2 rounded-md ${isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}></div>
+          <div className="p-4 rounded-xl border" style={{
+            backgroundColor: isDarkMode ? '#1f2937' : 'var(--color-base-100)',
+            borderColor: isDarkMode ? '#374151' : 'var(--color-base-300)'
+          }}>
+            <div className="h-24 rounded-lg mb-2" style={{
+              backgroundColor: isDarkMode ? '#374151' : 'var(--color-base-200)'
+            }}></div>
+            <div className="h-4 w-3/4 rounded-md mb-2" style={{
+              backgroundColor: isDarkMode ? '#4b5563' : 'var(--color-base-300)'
+            }}></div>
+            <div className="h-4 w-1/2 rounded-md" style={{
+              backgroundColor: isDarkMode ? '#4b5563' : 'var(--color-base-300)'
+            }}></div>
+            <p className="text-xs mt-2 text-center" style={{
+              color: isDarkMode ? '#d1d5db' : 'var(--color-base-content)'
+            }}>Light Theme</p>
           </div>
-          <div className={`p-4 rounded-lg border ${!isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-            <div className={`h-24 rounded-md mb-2 ${!isDarkMode ? 'bg-gray-700' : 'bg-gray-100'}`}></div>
-            <div className={`h-4 w-3/4 rounded-md mb-2 ${!isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}></div>
-            <div className={`h-4 w-1/2 rounded-md ${!isDarkMode ? 'bg-gray-600' : 'bg-gray-200'}`}></div>
+          <div className="p-4 rounded-xl border" style={{
+            backgroundColor: !isDarkMode ? '#1f2937' : 'var(--color-base-100)',
+            borderColor: !isDarkMode ? '#374151' : 'var(--color-base-300)'
+          }}>
+            <div className="h-24 rounded-lg mb-2" style={{
+              backgroundColor: !isDarkMode ? '#374151' : 'var(--color-base-200)'
+            }}></div>
+            <div className="h-4 w-3/4 rounded-md mb-2" style={{
+              backgroundColor: !isDarkMode ? '#4b5563' : 'var(--color-base-300)'
+            }}></div>
+            <div className="h-4 w-1/2 rounded-md" style={{
+              backgroundColor: !isDarkMode ? '#4b5563' : 'var(--color-base-300)'
+            }}></div>
+            <p className="text-xs mt-2 text-center" style={{
+              color: !isDarkMode ? '#d1d5db' : 'var(--color-base-content)'
+            }}>Dark Theme</p>
           </div>
         </div>
         
-        <p className="text-xs text-gray-500 mt-4">
+        <p className="text-xs mt-4" style={{color: 'var(--color-base-content)'}}>
           {isDarkMode 
             ? 'Dark mode is currently enabled. This setting will apply to your entire dashboard.' 
             : 'Light mode is currently enabled. This setting will apply to your entire dashboard.'}

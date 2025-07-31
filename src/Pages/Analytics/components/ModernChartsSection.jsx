@@ -1,10 +1,23 @@
 import React from 'react';
+import { useTheme } from '../../../Context/ThemeContext';
 
 const ModernChartsSection = ({ postGrowth, postsByCategory, postsByUser, selectedMetric }) => {
+  const { theme } = useTheme();
+
   const renderLineChart = (data, title, color) => (
-    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-lg">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-        <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${color}`}></div>
+    <div className="backdrop-blur-sm p-6 border shadow-lg transition-all duration-300" style={{
+      backgroundColor: 'var(--color-base-100)',
+      borderColor: 'var(--color-base-300)',
+      borderRadius: 'var(--radius-box)',
+      border: 'var(--border) solid var(--color-base-300)'
+    }}>
+      <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 transition-colors duration-300" style={{
+        color: 'var(--color-base-content)'
+      }}>
+        <div className="w-3 h-3" style={{
+          backgroundColor: color,
+          borderRadius: 'var(--radius-selector)'
+        }}></div>
         {title}
       </h3>
       <div className="h-64 flex items-end justify-between gap-2">
@@ -13,11 +26,17 @@ const ModernChartsSection = ({ postGrowth, postsByCategory, postsByUser, selecte
           const height = ((item.count || item.views || 0) / maxValue) * 200;
           return (
             <div key={index} className="flex-1 flex flex-col items-center">
-              <div 
-                className={`w-full bg-gradient-to-t ${color} rounded-t-lg transition-all duration-500 hover:scale-105`}
-                style={{ height: `${height}px` }}
+              <div
+                className="w-full rounded-t-lg transition-all duration-500 hover:scale-105"
+                style={{
+                  height: `${height}px`,
+                  backgroundColor: color
+                }}
               ></div>
-              <span className="text-xs text-gray-500 dark:text-gray-400 mt-2 truncate">
+              <span className="text-xs mt-2 truncate transition-colors duration-300" style={{
+                color: 'var(--color-base-content)',
+                opacity: '0.7'
+              }}>
                 {item.date?.split('-')[1] || item.category || item.user}
               </span>
             </div>
@@ -28,27 +47,47 @@ const ModernChartsSection = ({ postGrowth, postsByCategory, postsByUser, selecte
   );
 
   const renderPieChart = (data, title, colors) => (
-    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/50 shadow-lg">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{title}</h3>
+    <div className="backdrop-blur-sm p-6 border shadow-lg transition-all duration-300" style={{
+      backgroundColor: 'var(--color-base-100)',
+      borderColor: 'var(--color-base-300)',
+      borderRadius: 'var(--radius-box)',
+      border: 'var(--border) solid var(--color-base-300)'
+    }}>
+      <h3 className="text-lg font-semibold mb-4 transition-colors duration-300" style={{
+        color: 'var(--color-base-content)'
+      }}>{title}</h3>
       <div className="space-y-3">
         {data.slice(0, 5).map((item, index) => {
           const percentage = item.percentage || ((item.count / data.reduce((sum, d) => sum + d.count, 0)) * 100);
           return (
             <div key={index} className="flex items-center gap-3">
-              <div className={`w-4 h-4 rounded-full bg-gradient-to-r ${colors[index % colors.length]}`}></div>
+              <div className="w-4 h-4" style={{
+                backgroundColor: colors[index % colors.length],
+                borderRadius: 'var(--radius-selector)'
+              }}></div>
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  <span className="text-sm font-medium transition-colors duration-300" style={{
+                    color: 'var(--color-base-content)'
+                  }}>
                     {item.category || item.user}
                   </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                  <span className="text-sm transition-colors duration-300" style={{
+                    color: 'var(--color-base-content)',
+                    opacity: '0.7'
+                  }}>
                     {percentage.toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div 
-                    className={`h-2 bg-gradient-to-r ${colors[index % colors.length]} rounded-full transition-all duration-500`}
-                    style={{ width: `${percentage}%` }}
+                <div className="w-full rounded-full h-2 transition-colors duration-300" style={{
+                  backgroundColor: 'var(--color-base-300)'
+                }}>
+                  <div
+                    className="h-2 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${percentage}%`,
+                      background: `linear-gradient(135deg, ${colors[index % colors.length]} 0%, ${colors[index % colors.length]}dd 100%)`
+                    }}
                   ></div>
                 </div>
               </div>
@@ -60,39 +99,39 @@ const ModernChartsSection = ({ postGrowth, postsByCategory, postsByUser, selecte
   );
 
   const colors = [
-    'from-blue-500 to-cyan-500',
-    'from-green-500 to-emerald-500',
-    'from-purple-500 to-pink-500',
-    'from-orange-500 to-red-500',
-    'from-indigo-500 to-purple-500'
+    'var(--color-primary)',
+    'var(--color-success)',
+    'var(--color-secondary)',
+    'var(--color-warning)',
+    'var(--color-accent)'
   ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {selectedMetric === 'overview' && (
         <>
-          {renderLineChart(postGrowth, 'Content Growth Over Time', 'from-blue-500 to-cyan-500')}
+          {renderLineChart(postGrowth, 'Content Growth Over Time', 'var(--color-primary)')}
           {renderPieChart(postsByCategory, 'Posts by Category', colors)}
         </>
       )}
-      
+
       {selectedMetric === 'content' && (
         <>
-          {renderLineChart(postGrowth, 'Publishing Trends', 'from-green-500 to-emerald-500')}
+          {renderLineChart(postGrowth, 'Publishing Trends', 'var(--color-success)')}
           {renderPieChart(postsByCategory, 'Content Distribution', colors)}
         </>
       )}
-      
+
       {selectedMetric === 'users' && (
         <>
           {renderPieChart(postsByUser, 'Top Contributors', colors)}
-          {renderLineChart(postGrowth.map(item => ({ ...item, count: item.views || item.count })), 'User Activity', 'from-purple-500 to-pink-500')}
+          {renderLineChart(postGrowth.map(item => ({ ...item, count: item.views || item.count })), 'User Activity', 'var(--color-secondary)')}
         </>
       )}
-      
+
       {selectedMetric === 'engagement' && (
         <>
-          {renderLineChart(postGrowth.map(item => ({ ...item, count: item.engagement * 1000 || item.count })), 'Engagement Trends', 'from-orange-500 to-red-500')}
+          {renderLineChart(postGrowth.map(item => ({ ...item, count: item.engagement * 1000 || item.count })), 'Engagement Trends', 'var(--color-warning)')}
           {renderPieChart(postsByUser.map(item => ({ ...item, count: item.engagement * 100 || item.count })), 'Engagement by Author', colors)}
         </>
       )}

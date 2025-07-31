@@ -4,22 +4,24 @@ import ModernStatsGrid from './components/ModernStatsGrid';
 import ModernChartsSection from './components/ModernChartsSection';
 import ModernActivityTable from './components/ModernActivityTable';
 import { useAnalytics } from '../../Services/AnalyticsContext';
+import { useTheme } from '../../Context/ThemeContext';
 
 const AnalyticsPage = () => {
   const [dateRange, setDateRange] = useState('week');
   const [selectedMetric, setSelectedMetric] = useState('overview');
   const { analyticsData, loading, error, fetchAnalyticsData } = useAnalytics();
-  
+  const { theme } = useTheme();
+
   useEffect(() => {
     fetchAnalyticsData(dateRange === 'week' ? '7' : dateRange === 'month' ? '30' : '365');
   }, [dateRange]);
-  
+
   useEffect(() => {
     if (!analyticsData.stats.totalPosts && !loading) {
       fetchAnalyticsData('30');
     }
   }, []);
-  
+
   // Enhanced fallback data with more realistic metrics
   const fallbackData = {
     stats: {
@@ -69,75 +71,100 @@ const AnalyticsPage = () => {
       { id: 5, title: 'Building RESTful APIs', author: 'John Doe', status: 'published', date: '2023-11-28', views: 1156, engagement: 4.6 }
     ]
   };
-  
+
   const getFilteredData = () => {
     return loading || error ? fallbackData : analyticsData;
   };
-  
+
   const filteredData = getFilteredData();
-  
+
   // Moved metricTabs to ModernAnalyticsHeader component
-  
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-indigo-900/20 dark:to-purple-900/20">
+    <div className="min-h-screen transition-all duration-300" style={{
+      backgroundColor: 'var(--color-base-100)',
+      background: `linear-gradient(135deg, var(--color-base-100) 0%, var(--color-base-200) 100%)`
+    }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-6 sm:space-y-8">
-          <ModernAnalyticsHeader 
+          <ModernAnalyticsHeader
             dateRange={dateRange}
             onDateRangeChange={setDateRange}
             onRefresh={() => fetchAnalyticsData(dateRange === 'week' ? '7' : dateRange === 'month' ? '30' : '365')}
             selectedMetric={selectedMetric}
             onMetricChange={setSelectedMetric}
           />
-          
+
           {loading && (
             <div className="flex flex-col items-center justify-center py-16 space-y-4">
               <div className="relative">
-                <div className="w-16 h-16 border-4 border-indigo-200 dark:border-indigo-800 rounded-full animate-spin"></div>
-                <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-indigo-600 rounded-full animate-spin"></div>
+                <div className="w-16 h-16 border-4 rounded-full animate-spin" style={{
+                  borderColor: 'var(--color-base-300)'
+                }}></div>
+                <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent rounded-full animate-spin" style={{
+                  borderTopColor: 'var(--color-primary)'
+                }}></div>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 font-medium">Loading analytics data...</p>
+              <p className="font-medium transition-colors duration-300" style={{ color: 'var(--color-base-content)' }}>
+                Loading analytics data...
+              </p>
             </div>
           )}
-          
+
           {error && !loading && (
-            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 border border-red-200/50 dark:border-red-700/50 shadow-lg">
+            <div className="backdrop-blur-sm p-6 border shadow-lg transition-all duration-300" style={{
+              backgroundColor: 'var(--color-base-100)',
+              borderColor: 'var(--color-error)',
+              borderRadius: 'var(--radius-box)'
+            }}>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 flex items-center justify-center" style={{
+                  backgroundColor: 'var(--color-error)',
+                  borderRadius: 'var(--radius-box)'
+                }}>
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Unable to Load Analytics</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{error}</p>
+                  <h3 className="text-lg font-semibold transition-colors duration-300" style={{ color: 'var(--color-base-content)' }}>
+                    Unable to Load Analytics
+                  </h3>
+                  <p className="transition-colors duration-300" style={{ color: 'var(--color-base-content)', opacity: '0.7' }}>
+                    {error}
+                  </p>
                 </div>
-                <button 
+                <button
                   onClick={() => fetchAnalyticsData('30')}
-                  className="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                  className="px-6 py-3 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
+                  style={{
+                    backgroundColor: 'var(--color-error)',
+                    color: 'var(--color-error-content)',
+                    borderRadius: 'var(--radius-box)'
+                  }}
                 >
                   Try Again
                 </button>
               </div>
             </div>
           )}
-          
+
           {!loading && !error && (
             <>
-              <ModernStatsGrid 
-                stats={filteredData.stats} 
-                selectedMetric={selectedMetric} 
+              <ModernStatsGrid
+                stats={filteredData.stats}
+                selectedMetric={selectedMetric}
               />
-              
-              <ModernChartsSection 
-                postGrowth={filteredData.postsByDate || filteredData.charts?.postGrowth || []} 
+
+              <ModernChartsSection
+                postGrowth={filteredData.postsByDate || filteredData.charts?.postGrowth || []}
                 postsByCategory={filteredData.postsByCategory || filteredData.charts?.postsByCategory || []}
                 postsByUser={filteredData.postsByUser || filteredData.charts?.postsByUser || []}
                 selectedMetric={selectedMetric}
               />
-              
-              <ModernActivityTable 
-                activities={filteredData.recentActivity || []} 
+
+              <ModernActivityTable
+                activities={filteredData.recentActivity || []}
               />
             </>
           )}

@@ -93,21 +93,40 @@ const ModernEnhancedEditor = ({ isOpen, onClose, postId = null }) => {
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+        className="absolute inset-0 backdrop-blur-sm transition-opacity duration-300"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         onClick={handleClose}
       />
       
       {/* Modal */}
       <div className="relative flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-7xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl transform transition-all duration-300 max-h-[95vh] overflow-hidden flex flex-col">
+        <div 
+          className="relative w-full max-w-7xl rounded-2xl transform transition-all duration-300 max-h-[95vh] overflow-hidden flex flex-col editor-shadow"
+          style={{ 
+            backgroundColor: 'var(--color-base-100)',
+            color: 'var(--color-base-content)'
+          }}
+        >
           {/* Header */}
-          <div className="flex-shrink-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+          <div 
+            className="flex-shrink-0 backdrop-blur-sm px-6 py-4"
+            style={{
+              backgroundColor: 'var(--color-base-200)',
+              borderBottom: `1px solid var(--color-base-300)`
+            }}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <h1 
+                  className="text-2xl font-bold"
+                  style={{ color: 'var(--color-primary)' }}
+                >
                   {isEditing ? "Edit Post" : "Advanced Editor"}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p 
+                  className="text-sm mt-1"
+                  style={{ color: 'var(--color-base-content)', opacity: 0.7 }}
+                >
                   {isEditing
                     ? "Update your post with enhanced features"
                     : "Create a new post with SEO tools, scheduling, and more"}
@@ -116,7 +135,19 @@ const ModernEnhancedEditor = ({ isOpen, onClose, postId = null }) => {
               
               <button
                 onClick={handleClose}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                className="p-2 rounded-lg transition-all duration-200"
+                style={{
+                  color: 'var(--color-base-content)',
+                  opacity: 0.6
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-base-300)';
+                  e.target.style.opacity = '1';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.opacity = '0.6';
+                }}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -126,23 +157,42 @@ const ModernEnhancedEditor = ({ isOpen, onClose, postId = null }) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto editor-scrollable">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-16 space-y-4">
                 <div className="relative">
-                  <div className="w-16 h-16 border-4 border-blue-200 dark:border-blue-800 rounded-full animate-spin"></div>
-                  <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
+                  <div 
+                    className="w-16 h-16 border-4 rounded-full animate-spin"
+                    style={{ borderColor: 'var(--color-base-300)' }}
+                  ></div>
+                  <div 
+                    className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent rounded-full animate-spin"
+                    style={{ borderTopColor: 'var(--color-primary)' }}
+                  ></div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 font-medium">Loading editor...</p>
+                <p 
+                  className="font-medium"
+                  style={{ color: 'var(--color-base-content)', opacity: 0.7 }}
+                >
+                  Loading editor...
+                </p>
               </div>
             ) : (
               <div className="p-6">
                 {error && (
-                  <div className="mb-6 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 p-4 rounded-r-lg">
+                  <div 
+                    className="mb-6 p-4 rounded-r-lg"
+                    style={{
+                      backgroundColor: 'var(--color-error)',
+                      opacity: 0.1,
+                      borderLeft: `4px solid var(--color-error)`
+                    }}
+                  >
                     <div className="flex">
                       <div className="flex-shrink-0">
                         <svg
-                          className="h-5 w-5 text-red-400"
+                          className="h-5 w-5"
+                          style={{ color: 'var(--color-error)' }}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
@@ -155,7 +205,12 @@ const ModernEnhancedEditor = ({ isOpen, onClose, postId = null }) => {
                         </svg>
                       </div>
                       <div className="ml-3">
-                        <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                        <p 
+                          className="text-sm"
+                          style={{ color: 'var(--color-error)' }}
+                        >
+                          {error}
+                        </p>
                       </div>
                     </div>
                   </div>

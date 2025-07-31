@@ -3,14 +3,14 @@ import { BrandLogo } from '../Common';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 border-t border-gray-800">
+    <footer className="border-t" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
               <BrandLogo size="lg" />
             </div>
-            <p className="text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
+            <p className="text-lg leading-relaxed mb-6 max-w-md" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
               The next-generation content management platform built for modern teams who demand excellence.
             </p>
             <div className="flex space-x-4">
@@ -18,7 +18,18 @@ const Footer = () => {
                 <a
                   key={social}
                   href="#"
-                  className="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300"
+                  style={{backgroundColor: 'var(--color-base-300)', color: 'var(--color-base-content)', opacity: '0.7'}}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'var(--color-primary)';
+                    e.target.style.color = 'var(--color-primary-content)';
+                    e.target.style.opacity = '1';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'var(--color-base-300)';
+                    e.target.style.color = 'var(--color-base-content)';
+                    e.target.style.opacity = '0.7';
+                  }}
                 >
                   <span className="sr-only">{social}</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -30,11 +41,11 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-white font-semibold mb-6">Product</h3>
+            <h3 className="font-semibold mb-6" style={{color: 'var(--color-base-content)'}}>Product</h3>
             <ul className="space-y-4">
               {['Features', 'Pricing', 'API', 'Documentation'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
+                  <a href="#" className="transition-colors duration-300" style={{color: 'var(--color-base-content)', opacity: '0.7'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.7';}}>
                     {item}
                   </a>
                 </li>
@@ -43,11 +54,11 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-white font-semibold mb-6">Company</h3>
+            <h3 className="font-semibold mb-6" style={{color: 'var(--color-base-content)'}}>Company</h3>
             <ul className="space-y-4">
               {['About', 'Blog', 'Careers', 'Contact'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
+                  <a href="#" className="transition-colors duration-300" style={{color: 'var(--color-base-content)', opacity: '0.7'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.7';}}>
                     {item}
                   </a>
                 </li>
@@ -56,15 +67,15 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400">
+        <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center" style={{borderColor: 'var(--color-base-300)'}}>
+          <p style={{color: 'var(--color-base-content)', opacity: '0.6'}}>
             © 2024 FusionX. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
+            <a href="#" className="transition-colors duration-300" style={{color: 'var(--color-base-content)', opacity: '0.6'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.6';}}>
               Privacy Policy
             </a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
+            <a href="#" className="transition-colors duration-300" style={{color: 'var(--color-base-content)', opacity: '0.6'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.6';}}>
               Terms of Service
             </a>
           </div>

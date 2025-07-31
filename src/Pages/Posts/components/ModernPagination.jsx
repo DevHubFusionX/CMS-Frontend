@@ -37,13 +37,17 @@ const ModernPagination = ({
   };
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/20 dark:border-gray-700/50 shadow-lg">
+    <div className="backdrop-blur-sm rounded-2xl p-4 sm:p-6 border shadow-lg" style={{
+      backgroundColor: 'var(--color-base-200)',
+      borderColor: 'var(--color-base-300)',
+      background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+    }}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Results Info */}
-        <div className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
-          Showing <span className="font-medium text-gray-900 dark:text-white">{indexOfFirstPost + 1}</span> to{' '}
-          <span className="font-medium text-gray-900 dark:text-white">{Math.min(indexOfLastPost, totalPosts)}</span> of{' '}
-          <span className="font-medium text-gray-900 dark:text-white">{totalPosts.toLocaleString()}</span> posts
+        <div className="text-sm text-center sm:text-left" style={{color: 'var(--color-base-content)'}}>
+          Showing <span className="font-medium" style={{color: 'var(--color-primary)'}}>{indexOfFirstPost + 1}</span> to{' '}
+          <span className="font-medium" style={{color: 'var(--color-primary)'}}>{Math.min(indexOfLastPost, totalPosts)}</span> of{' '}
+          <span className="font-medium" style={{color: 'var(--color-primary)'}}>{totalPosts.toLocaleString()}</span> posts
         </div>
 
         {/* Pagination Controls */}
@@ -52,11 +56,26 @@ const ModernPagination = ({
           <button
             onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
             disabled={currentPage === 1}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${
-              currentPage === 1
-                ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
-            }`}
+            className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 border"
+            style={{
+              backgroundColor: currentPage === 1 ? 'var(--color-base-300)' : 'var(--color-base-200)',
+              color: currentPage === 1 ? 'var(--color-base-content)' : 'var(--color-base-content)',
+              borderColor: 'var(--color-base-300)',
+              opacity: currentPage === 1 ? 0.5 : 1,
+              cursor: currentPage === 1 ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (currentPage !== 1) {
+                e.target.style.backgroundColor = 'var(--color-base-300)';
+                e.target.style.transform = 'scale(1.05)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (currentPage !== 1) {
+                e.target.style.backgroundColor = 'var(--color-base-200)';
+                e.target.style.transform = 'scale(1)';
+              }
+            }}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -69,15 +88,30 @@ const ModernPagination = ({
             {getVisiblePages().map((page, index) => (
               <React.Fragment key={index}>
                 {page === '...' ? (
-                  <span className="px-3 py-2 text-gray-400 dark:text-gray-500">...</span>
+                  <span className="px-3 py-2" style={{color: 'var(--color-base-content)'}}>...</span>
                 ) : (
                   <button
                     onClick={() => onPageChange(page)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      currentPage === page
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                        : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
-                    }`}
+                    className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 border"
+                    style={{
+                      backgroundColor: currentPage === page ? 'var(--color-primary)' : 'var(--color-base-200)',
+                      color: currentPage === page ? 'var(--color-primary-content)' : 'var(--color-base-content)',
+                      borderColor: currentPage === page ? 'var(--color-primary)' : 'var(--color-base-300)',
+                      boxShadow: currentPage === page ? '0 10px 25px rgba(0, 0, 0, 0.15)' : 'none',
+                      transform: currentPage === page ? 'scale(1.05)' : 'scale(1)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentPage !== page) {
+                        e.target.style.backgroundColor = 'var(--color-base-300)';
+                        e.target.style.transform = 'scale(1.05)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentPage !== page) {
+                        e.target.style.backgroundColor = 'var(--color-base-200)';
+                        e.target.style.transform = 'scale(1)';
+                      }
+                    }}
                   >
                     {page}
                   </button>
@@ -90,11 +124,26 @@ const ModernPagination = ({
           <button
             onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${
-              currentPage === totalPages
-                ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
-            }`}
+            className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 border"
+            style={{
+              backgroundColor: currentPage === totalPages ? 'var(--color-base-300)' : 'var(--color-base-200)',
+              color: currentPage === totalPages ? 'var(--color-base-content)' : 'var(--color-base-content)',
+              borderColor: 'var(--color-base-300)',
+              opacity: currentPage === totalPages ? 0.5 : 1,
+              cursor: currentPage === totalPages ? 'not-allowed' : 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              if (currentPage !== totalPages) {
+                e.target.style.backgroundColor = 'var(--color-base-300)';
+                e.target.style.transform = 'scale(1.05)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (currentPage !== totalPages) {
+                e.target.style.backgroundColor = 'var(--color-base-200)';
+                e.target.style.transform = 'scale(1)';
+              }
+            }}
           >
             <span className="hidden sm:inline">Next</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

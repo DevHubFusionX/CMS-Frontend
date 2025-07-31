@@ -67,14 +67,18 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
   return (
     <>
       <div className="col-span-1 md:col-span-2">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Branding Settings</h2>
-        <p className="text-sm text-gray-500 mb-6">Customize your CMS branding and appearance.</p>
+        <h2 className="text-lg font-medium mb-4" style={{color: 'var(--color-base-content)'}}>Branding Settings</h2>
+        <p className="text-sm mb-6" style={{color: 'var(--color-base-content)'}}>Customize your CMS branding and appearance.</p>
       </div>
       
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 col-span-1 md:col-span-2">
+      <div className="rounded-xl border shadow-lg p-6 col-span-1 md:col-span-2 backdrop-blur-sm" style={{
+        backgroundColor: 'var(--color-base-200)',
+        borderColor: 'var(--color-base-300)',
+        background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+      }}>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="cmsName" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="cmsName" className="block text-sm font-medium" style={{color: 'var(--color-base-content)'}}>
               CMS Name
             </label>
             <input
@@ -83,16 +87,23 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
               name="cmsName"
               value={formData.cmsName}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-xl border shadow-sm focus:ring-2 focus:ring-offset-2 transition-all duration-300 px-4 py-3"
+              style={{
+                backgroundColor: 'var(--color-base-200)',
+                borderColor: 'var(--color-base-300)',
+                color: 'var(--color-base-content)',
+                focusRingColor: 'var(--color-primary)',
+                focusBorderColor: 'var(--color-primary)'
+              }}
               placeholder="Enter CMS name"
             />
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs" style={{color: 'var(--color-base-content)'}}>
               This name will appear in the browser title and throughout the application.
             </p>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{color: 'var(--color-base-content)'}}>
               Logo
             </label>
             <div className="flex items-center space-x-6">
@@ -104,7 +115,10 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
                     className="h-16 w-auto object-contain"
                   />
                 ) : (
-                  <div className="h-16 w-32 bg-gray-100 rounded flex items-center justify-center text-gray-400">
+                  <div className="h-16 w-32 rounded flex items-center justify-center" style={{
+                    backgroundColor: 'var(--color-base-300)',
+                    color: 'var(--color-base-content)'
+                  }}>
                     No logo
                   </div>
                 )}
@@ -122,7 +136,13 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
                 <button
                   type="button"
                   onClick={handleLogoButtonClick}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border shadow-sm text-sm font-medium rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 hover:shadow-lg"
+                  style={{
+                    backgroundColor: 'var(--color-base-200)',
+                    borderColor: 'var(--color-base-300)',
+                    color: 'var(--color-base-content)',
+                    focusRingColor: 'var(--color-primary)'
+                  }}
                 >
                   {logoPreview ? 'Change Logo' : 'Upload Logo'}
                 </button>
@@ -134,27 +154,28 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
                       setLogoPreview(null);
                       setFormData(prev => ({ ...prev, logo: null }));
                     }}
-                    className="ml-2 text-sm text-red-600 hover:text-red-800"
+                    className="ml-2 text-sm transition-colors duration-200"
+                    style={{color: 'var(--color-error)'}}
                   >
                     Remove
                   </button>
                 )}
               </div>
             </div>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs" style={{color: 'var(--color-base-content)'}}>
               Recommended size: 200x50 pixels. PNG or SVG with transparent background.
             </p>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2" style={{color: 'var(--color-base-content)'}}>
               Primary Theme Color
             </label>
             <ColorPicker 
               color={formData.primaryColor} 
               onChange={handleColorChange} 
             />
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs" style={{color: 'var(--color-base-content)'}}>
               This color will be used for buttons, links, and other UI elements.
             </p>
           </div>
@@ -163,10 +184,14 @@ const BrandingSettings = ({ brandingData, onUpdate }) => {
             <button
               type="submit"
               disabled={loading}
-              className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              className={`inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 hover:shadow-xl transform hover:scale-105 ${
                 loading ? 'opacity-75 cursor-not-allowed' : ''
               }`}
-              style={{ backgroundColor: loading ? undefined : formData.primaryColor }}
+              style={{ 
+                backgroundColor: loading ? 'var(--color-primary)' : formData.primaryColor,
+                color: 'white',
+                focusRingColor: formData.primaryColor
+              }}
             >
               {loading ? (
                 <>

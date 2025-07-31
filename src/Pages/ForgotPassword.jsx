@@ -1,119 +1,132 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ForgotPasswordForm } from "../Components/Auth";
+import { motion } from "framer-motion";
 import { authService } from "../Services/api";
-import { AnimatedContainer, CodeAnimation, BrandLogo } from "../Components/Common";
+import { ForgotPasswordForm } from "../Components/Auth";
+import ThemeToggle from "../Components/UI/ThemeToggle";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [email, setEmail] = useState('');
 
 const handleForgotPassword = async (formData) => {
   try {
     setLoading(true);
     setError(null);
+    setEmail(formData.email);
 
-    // Call the forgot password service
     await authService.forgotPassword(formData);
-    
-    // No need to navigate - the form will show a success message
+    setSuccess(true);
   } catch (err) {
-    setError("Failed to send password reset email. Please check your network connection.");
-    console.error("Reset password error:", err);
+    setError(err.message || "Failed to send password reset email.");
   } finally {
     setLoading(false);
   }
 };
 
   return (
-    <div className="split-screen-container">
-      {/* Back to Home Link */}
-      {/* <AuthHeader /> */}
-
-      {/* Left Panel - Login Form */}
-      <div className="split-screen-left z-100">
-        {error && (
-          <AnimatedContainer
-            animation="fade-in"
-            className=" absolute top-1 left-0 right-0 mx-auto w-full max-w-md px-4"
-          >
-            <div
-              className="bg-red-900/80 border border-red-700 text-red-100 px-4 py-3 rounded-lg backdrop-blur-sm"
-              role="alert"
-            >
-              <span className="block sm:inline">{error}</span>
-            </div>
-          </AnimatedContainer>
-        )}
-
-        {loading ? (
-          <AnimatedContainer animation="fade-in" className="tech-card">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <p className="text-gray-100 font-medium text-center text-xl">
-              Processing...
-            </p>
-            <p className="text-gray-400 text-sm mt-2 text-center">
-              Please wait while we send the reset link
-            </p>
-          </AnimatedContainer>
-        ) : (
-          <AnimatedContainer animation="slide-up" className="w-full max-w-md">
-            <ForgotPasswordForm onSubmit={handleForgotPassword} isLoading={loading} />
-          </AnimatedContainer>
-        )}
+    <div className="min-h-screen flex" style={{backgroundColor: 'var(--color-base-100)'}}>
+      {/* Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full filter blur-3xl animate-pulse" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', opacity: '0.1'}}></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full filter blur-3xl animate-pulse" style={{background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%)', opacity: '0.1', animationDelay: '2s'}}></div>
       </div>
 
-      {/* Right Panel - Animation */}
-      <div className="split-screen-right">
-        <CodeAnimation />
-
-        <div className="relative z-10 text-center p-8">
-          <AnimatedContainer animation="fade-in" delay={300} className="mb-8">
-            <BrandLogo size="xl" className="mb-4" />
-            <p className="text-gray-300 text-lg">
-              Advanced Content Management System
-            </p>
-          </AnimatedContainer>
-
-          <AnimatedContainer animation="fade-in" delay={600} className="mt-12">
-            <div className="relative w-full max-w-md mx-auto h-64 rounded-lg overflow-hidden border border-gray-700/50 shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/50 animate-pulse">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-12 w-12 text-blue-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-blue-300 font-medium">
-                    Powerful Developer Tools
-                  </p>
-                  <p className="text-gray-400 text-sm mt-2">
-                    Streamline your workflow with our advanced CMS
-                  </p>
-                </div>
+      {/* Left Panel - Form */}
+      <div className="flex-1 flex items-center justify-center p-8 relative z-10">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shadow-lg" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
+                F
               </div>
             </div>
-          </AnimatedContainer>
-        </div>
+            <h1 className="text-3xl font-bold mb-2" style={{color: 'var(--color-base-content)'}}>Reset Password</h1>
+            <p style={{color: 'var(--color-base-content)', opacity: '0.7'}}>Enter your email to receive a password reset link</p>
+          </motion.div>
 
-        {/* Decorative elements */}
-        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-blue-900/20 to-transparent"></div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl"></div>
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-6 p-4 rounded-2xl border backdrop-blur-sm"
+              style={{backgroundColor: 'var(--color-error)', borderColor: 'var(--color-error)', color: 'var(--color-error-content)', opacity: '0.9'}}
+            >
+              {error}
+            </motion.div>
+          )}
+
+          {/* Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <ForgotPasswordForm 
+              onSubmit={handleForgotPassword} 
+              isLoading={loading}
+              success={success}
+              error={error}
+              email={email}
+              onReset={() => {
+                setSuccess(false);
+                setError(null);
+                setEmail('');
+              }}
+            />
+          </motion.div>
+
+          {/* Footer Links */}
+          <motion.div 
+            className="text-center mt-8 space-y-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Link to="/login" className="block transition-colors" style={{color: 'var(--color-primary)'}} onMouseEnter={(e) => e.target.style.opacity = '0.8'} onMouseLeave={(e) => e.target.style.opacity = '1'}>
+              ← Back to Login
+            </Link>
+            <Link to="/" className="block text-sm transition-colors" style={{color: 'var(--color-base-content)', opacity: '0.7'}} onMouseEnter={(e) => e.target.style.opacity = '1'} onMouseLeave={(e) => e.target.style.opacity = '0.7'}>
+              Back to Home
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Right Panel - Info */}
+      <div className="hidden lg:flex flex-1 items-center justify-center p-8 relative" style={{backgroundColor: 'var(--color-base-200)'}}>
+        <motion.div 
+          className="text-center max-w-md"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="w-24 h-24 mx-auto mb-6 rounded-3xl flex items-center justify-center" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold mb-4" style={{color: 'var(--color-base-content)'}}>
+            Secure Password Recovery
+          </h2>
+          <p className="leading-relaxed" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
+            We'll send you a secure link to reset your password. The link will expire in 1 hour for your security.
+          </p>
+        </motion.div>
+        
+        {/* Theme Toggle */}
+        <div className="absolute top-8 right-8">
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

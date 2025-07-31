@@ -1,14 +1,31 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { LoginForm } from '../Components/Auth'
 import { authService, useAuth } from '../Services'
-import { AnimatedContainer, CodeAnimation, BrandLogo, AuthHeader } from '../Components/Common'
+import { FusionXLoader } from '../Components/Common'
+import ThemeToggle from '../Components/UI/ThemeToggle'
 
 const Login = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [needsVerification, setNeedsVerification] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [resendingVerification, setResendingVerification] = useState(false)
   const navigate = useNavigate()
   const { login } = useAuth()
+
+  const handleResendVerification = async () => {
+    setResendingVerification(true)
+    try {
+      await authService.resendVerification(userEmail)
+      setError('Verification email sent! Please check your inbox.')
+    } catch (err) {
+      setError(err.message || 'Failed to resend verification email')
+    } finally {
+      setResendingVerification(false)
+    }
+  }
 
   const handleLogin = async (formData) => {
     try {
@@ -34,7 +51,14 @@ const Login = () => {
         navigate('/') // fallback to home
       }
     } catch (err) {
-      setError('Failed to login. Please check your credentials.')
+      const errorData = err.response?.data
+      if (errorData?.needsVerification) {
+        setNeedsVerification(true)
+        setUserEmail(errorData.email)
+        setError(errorData.message)
+      } else {
+        setError(errorData?.message || 'Failed to login. Please check your credentials.')
+      }
       console.error('Login error:', err)
     } finally {
       setLoading(false)
@@ -42,125 +66,185 @@ const Login = () => {
   }
 
   return (
-    <div className="split-screen-container">
-      {/* Back to Home Link */}
-      {/* <AuthHeader /> */}
-      
-      {/* Left Panel - Login Form */}
-      <div className="split-screen-left z-100">
-        {error && (
-          <AnimatedContainer animation="fade-in" className=" absolute top-1 left-0 right-0 mx-auto w-full max-w-md px-4">
-            <div className="bg-red-900/80 border border-red-700 text-red-100 px-4 py-3 rounded-lg backdrop-blur-sm" role="alert">
-              <span className="block sm:inline">{error}</span>
-            </div>
-          </AnimatedContainer>
-        )}
-        
-        {loading ? (
-          <AnimatedContainer animation="fade-in" className="tech-card">
-            <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <p className="text-gray-100 font-medium text-center text-xl">Logging in...</p>
-            <p className="text-gray-400 text-sm mt-2 text-center">Please wait while we verify your credentials</p>
-          </AnimatedContainer>
-        ) : (
-          <AnimatedContainer animation="slide-up" className="w-full max-w-md">
-            <LoginForm onLogin={handleLogin} />
-          </AnimatedContainer>
-        )}
+    <div className="min-h-screen flex" style={{backgroundColor: 'var(--color-base-100)'}}>
+      {/* Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full filter blur-3xl animate-pulse" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', opacity: '0.1'}}></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full filter blur-3xl animate-pulse" style={{background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%)', opacity: '0.1', animationDelay: '2s'}}></div>
       </div>
-      
-      {/* Right Panel - Enhanced Animation */}
-      <div className="split-screen-right">
-        <CodeAnimation />
-        
-        <div className="relative z-10 text-center p-8 max-w-lg mx-auto">
-          <AnimatedContainer animation="fade-in" delay={300} className="mb-12">
-            <BrandLogo size="xl" className="mb-6" />
-            <h2 className="text-2xl font-bold text-gray-200 mb-3">
-              Advanced Content Management
-            </h2>
-            <p className="text-gray-400 text-lg leading-relaxed">
-              Empowering creators with intelligent tools and seamless workflows
-            </p>
-          </AnimatedContainer>
-          
-          {/* Feature Cards */}
-          <div className="space-y-6">
-            <AnimatedContainer animation="fade-in" delay={600}>
-              <div className="relative p-6 rounded-2xl bg-gradient-to-br from-blue-600/10 to-blue-800/10 border border-blue-500/20 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
-                    <svg className="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-blue-300 font-semibold text-lg">Lightning Fast</h3>
-                    <p className="text-gray-400 text-sm">Optimized performance for modern web</p>
+
+      {/* Left Panel - Form */}
+      <div className="flex-1 flex items-center justify-center p-8 relative z-10">
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center justify-center mb-6">
+              <div className="relative w-20 h-20">
+                {/* Center Logo */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shadow-lg z-10" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
+                    F
                   </div>
                 </div>
-              </div>
-            </AnimatedContainer>
-            
-            <AnimatedContainer animation="fade-in" delay={800}>
-              <div className="relative p-6 rounded-2xl bg-gradient-to-br from-purple-600/10 to-purple-800/10 border border-purple-500/20 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30">
-                    <svg className="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-purple-300 font-semibold text-lg">Secure & Reliable</h3>
-                    <p className="text-gray-400 text-sm">Enterprise-grade security standards</p>
-                  </div>
-                </div>
-              </div>
-            </AnimatedContainer>
-            
-            <AnimatedContainer animation="fade-in" delay={1000}>
-              <div className="relative p-6 rounded-2xl bg-gradient-to-br from-green-600/10 to-green-800/10 border border-green-500/20 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center border border-green-500/30">
-                    <svg className="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-green-300 font-semibold text-lg">User Friendly</h3>
-                    <p className="text-gray-400 text-sm">Intuitive design for all skill levels</p>
-                  </div>
-                </div>
-              </div>
-            </AnimatedContainer>
-          </div>
-          
-          {/* Stats */}
-          <AnimatedContainer animation="fade-in" delay={1200} className="mt-12">
-            <div className="grid grid-cols-3 gap-6 text-center">
-              <div className="p-4">
-                <div className="text-2xl font-bold text-blue-400 mb-1">99.9%</div>
-                <div className="text-gray-500 text-sm">Uptime</div>
-              </div>
-              <div className="p-4">
-                <div className="text-2xl font-bold text-purple-400 mb-1">10k+</div>
-                <div className="text-gray-500 text-sm">Users</div>
-              </div>
-              <div className="p-4">
-                <div className="text-2xl font-bold text-green-400 mb-1">24/7</div>
-                <div className="text-gray-500 text-sm">Support</div>
+                
+                {/* Animated Dots */}
+                {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: 'var(--color-primary)',
+                      left: '50%',
+                      top: '50%',
+                      marginLeft: '-4px',
+                      marginTop: '-4px'
+                    }}
+                    animate={{
+                      x: [
+                        Math.cos((i * Math.PI) / 4) * 30,
+                        Math.cos(((i + 2) * Math.PI) / 4) * 30,
+                        Math.cos(((i + 4) * Math.PI) / 4) * 30,
+                        Math.cos(((i + 6) * Math.PI) / 4) * 30,
+                        Math.cos((i * Math.PI) / 4) * 30
+                      ],
+                      y: [
+                        Math.sin((i * Math.PI) / 4) * 30,
+                        Math.sin(((i + 2) * Math.PI) / 4) * 30,
+                        Math.sin(((i + 4) * Math.PI) / 4) * 30,
+                        Math.sin(((i + 6) * Math.PI) / 4) * 30,
+                        Math.sin((i * Math.PI) / 4) * 30
+                      ],
+                      scale: [1, 0.5, 1, 1.5, 1],
+                      opacity: [0.8, 0.3, 0.8, 1, 0.8]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
               </div>
             </div>
-          </AnimatedContainer>
+            <h1 className="text-3xl font-bold mb-2" style={{color: 'var(--color-base-content)'}}>Welcome Back</h1>
+            <p style={{color: 'var(--color-base-content)', opacity: '0.7'}}>Sign in to your account</p>
+          </motion.div>
+
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-6 p-4 rounded-2xl border backdrop-blur-sm"
+              style={{backgroundColor: needsVerification ? 'var(--color-warning)' : 'var(--color-error)', borderColor: needsVerification ? 'var(--color-warning)' : 'var(--color-error)', color: needsVerification ? 'var(--color-warning-content)' : 'var(--color-error-content)', opacity: '0.9'}}
+            >
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={needsVerification ? "M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" : "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"} />
+                </svg>
+                <div className="flex-1">
+                  {error}
+                  {needsVerification && (
+                    <div className="mt-3 space-y-2">
+                      <button
+                        onClick={() => navigate('/verify-otp', { state: { email: userEmail } })}
+                        className="w-full py-2 px-4 rounded-lg font-medium transition-all"
+                        style={{
+                          background: 'var(--color-primary)',
+                          color: 'var(--color-primary-content)'
+                        }}
+                      >
+                        Verify Account Now
+                      </button>
+                      <button
+                        onClick={handleResendVerification}
+                        disabled={resendingVerification}
+                        className="text-sm underline hover:no-underline disabled:opacity-50"
+                        style={{color: 'var(--color-warning-content)'}}
+                      >
+                        {resendingVerification ? 'Sending...' : 'Resend verification code'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Loading State */}
+          {loading ? (
+            <motion.div 
+              className="py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <FusionXLoader size="lg" message="Signing you in..." />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <LoginForm onLogin={handleLogin} />
+            </motion.div>
+          )}
         </div>
+      </div>
+
+      {/* Right Panel - Info */}
+      <div className="hidden lg:flex flex-1 items-center justify-center p-8 relative" style={{backgroundColor: 'var(--color-base-200)'}}>
+        <motion.div 
+          className="text-center max-w-md"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <h2 className="text-3xl font-bold mb-6" style={{color: 'var(--color-base-content)'}}>
+            Advanced Content Management
+          </h2>
+          <p className="text-lg mb-8 leading-relaxed" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
+            Empowering creators with intelligent tools and seamless workflows
+          </p>
+          
+          <div className="space-y-4">
+            {[
+              { icon: 'M13 10V3L4 14h7v7l9-11h-7z', title: 'Lightning Fast', desc: 'Optimized performance' },
+              { icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', title: 'Secure & Reliable', desc: 'Enterprise-grade security' },
+              { icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', title: 'User Friendly', desc: 'Intuitive design' }
+            ].map((feature, index) => (
+              <motion.div 
+                key={index}
+                className="flex items-center space-x-4 p-4 rounded-2xl backdrop-blur-sm"
+                style={{backgroundColor: 'var(--color-base-100)', opacity: '0.8'}}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 0.8, x: 0 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{backgroundColor: 'var(--color-primary)', color: 'var(--color-primary-content)'}}>
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon} />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="font-semibold" style={{color: 'var(--color-base-content)'}}>{feature.title}</h3>
+                  <p className="text-sm" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>{feature.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
         
-        {/* Enhanced Decorative elements */}
-        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-blue-900/20 via-purple-900/10 to-transparent"></div>
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-500/5 rounded-full filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        {/* Theme Toggle */}
+        <div className="absolute top-8 right-8">
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   )

@@ -115,12 +115,7 @@ function RegisterForm({ onRegister }) {
   }
 
   return (
-    <div className="modern-login-card max-w-md mx-auto">
-      <AnimatedContainer animation="fade-in" duration={800} className="text-center mb-8">
-        <BrandLogo size="md" className="mb-4" />
-        <h1 className="text-2xl font-bold text-gray-100 mb-2">Join FusionX</h1>
-        <p className="text-gray-400">Create your account and start building</p>
-      </AnimatedContainer>
+    <div className="max-w-md mx-auto">
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <AnimatedContainer animation="slide-left" delay={100}>
@@ -129,14 +124,20 @@ function RegisterForm({ onRegister }) {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                errors.name ? 'border-red-500' : 'border-gray-600'
+              className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                errors.name ? 'border-2' : 'border'
               }`}
+            style={{
+              backgroundColor: 'var(--color-base-200)',
+              borderColor: errors.name ? 'var(--color-error)' : 'var(--color-base-300)',
+              color: 'var(--color-base-content)',
+              focusRingColor: 'var(--color-primary)'
+            }}
               placeholder="Full Name"
             />
             {errors.name && (
               <AnimatedContainer animation="fade-in">
-                <p className="text-red-400 text-sm mt-1 flex items-center">
+                <p className="text-sm mt-1 flex items-center" style={{color: 'var(--color-error)'}}>
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
@@ -152,14 +153,20 @@ function RegisterForm({ onRegister }) {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                errors.email ? 'border-red-500' : 'border-gray-600'
+              className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                errors.email ? 'border-2' : 'border'
               }`}
+            style={{
+              backgroundColor: 'var(--color-base-200)',
+              borderColor: errors.email ? 'var(--color-error)' : 'var(--color-base-300)',
+              color: 'var(--color-base-content)',
+              focusRingColor: 'var(--color-primary)'
+            }}
               placeholder="Email Address"
             />
             {errors.email && (
               <AnimatedContainer animation="fade-in">
-                <p className="text-red-400 text-sm mt-1 flex items-center">
+                <p className="text-sm mt-1 flex items-center" style={{color: 'var(--color-error)'}}>
                   <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
@@ -177,15 +184,22 @@ function RegisterForm({ onRegister }) {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.password ? 'border-red-500' : 'border-gray-600'
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                  errors.password ? 'border-2' : 'border'
                 }`}
+                style={{
+                  backgroundColor: 'var(--color-base-200)',
+                  borderColor: errors.password ? 'var(--color-error)' : 'var(--color-base-300)',
+                  color: 'var(--color-base-content)',
+                  focusRingColor: 'var(--color-primary)'
+                }}
                 placeholder="Password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:opacity-80"
+                style={{color: 'var(--color-base-content)', opacity: '0.6'}}
               >
                 {showPassword ? '🙈' : '👁️'}
               </button>
@@ -196,9 +210,15 @@ function RegisterForm({ onRegister }) {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.confirmPassword ? 'border-red-500' : 'border-gray-600'
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all ${
+                  errors.confirmPassword ? 'border-2' : 'border'
                 }`}
+                style={{
+                  backgroundColor: 'var(--color-base-200)',
+                  borderColor: errors.confirmPassword ? 'var(--color-error)' : 'var(--color-base-300)',
+                  color: 'var(--color-base-content)',
+                  focusRingColor: 'var(--color-primary)'
+                }}
                 placeholder="Confirm"
               />
             </div>
@@ -208,12 +228,12 @@ function RegisterForm({ onRegister }) {
           {formData.password && (
             <AnimatedContainer animation="fade-in" className="mt-2">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-gray-400">Password strength:</span>
+                <span className="text-xs" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>Password strength:</span>
                 <span className={`text-xs font-medium ${getPasswordStrengthColor(passwordStrength)}`}>
                   {getPasswordStrengthText(passwordStrength)}
                 </span>
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-1.5">
+              <div className="w-full rounded-full h-1.5" style={{backgroundColor: 'var(--color-base-300)'}}>
                 <div 
                   className={`h-1.5 rounded-full transition-all duration-500 ${
                     passwordStrength <= 1 ? 'bg-red-500' :
@@ -234,14 +254,14 @@ function RegisterForm({ onRegister }) {
                     <svg className="h-4 w-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <p className="text-green-400 text-sm font-medium">Passwords match</p>
+                    <p className="text-sm font-medium" style={{color: 'var(--color-success)'}}>Passwords match</p>
                   </>
                 ) : (
                   <>
                     <svg className="h-4 w-4 text-yellow-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <p className="text-yellow-400 text-sm font-medium">Passwords don't match</p>
+                    <p className="text-sm font-medium" style={{color: 'var(--color-warning)'}}>Passwords don't match</p>
                   </>
                 )}
               </div>
@@ -250,7 +270,7 @@ function RegisterForm({ onRegister }) {
           
           {(errors.password || errors.confirmPassword) && (
             <AnimatedContainer animation="fade-in">
-              <p className="text-red-400 text-sm mt-2 flex items-center">
+              <p className="text-sm mt-2 flex items-center" style={{color: 'var(--color-error)'}}>
                 <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
@@ -261,20 +281,20 @@ function RegisterForm({ onRegister }) {
         </AnimatedContainer>
 
         <AnimatedContainer animation="slide-left" delay={250}>
-          <label className="block text-sm font-medium text-gray-300 mb-3">Account Type</label>
-          <div className="grid grid-cols-3 gap-2">
+          <label className="block text-sm font-medium mb-3" style={{color: 'var(--color-base-content)'}}>Account Type</label>
+          <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'subscriber', label: 'Reader', icon: '👤', desc: 'Basic access' },
-              { value: 'contributor', label: 'Contributor', icon: '✍️', desc: 'Submit content' },
-              { value: 'author', label: 'Creator', icon: '📝', desc: 'Publish content' }
+              { value: 'subscriber', label: 'Subscriber', icon: '👤', desc: 'View and comment on posts' },
+              { value: 'author', label: 'Author', icon: '📝', desc: 'Create and publish content' }
             ].map((role, index) => (
               <AnimatedContainer key={role.value} animation="fade-in" delay={300 + index * 50}>
                 <label
-                  className={`flex flex-col items-center p-3 border rounded-lg cursor-pointer transition-all transform hover:scale-105 ${
-                    formData.role === role.value
-                      ? 'border-blue-500 bg-blue-500/10 shadow-lg'
-                      : 'border-gray-600 hover:border-gray-500'
-                  }`}
+                  className={`flex flex-col items-center p-3 border rounded-lg cursor-pointer transition-all transform hover:scale-105 shadow-lg`}
+                  style={{
+                    borderColor: formData.role === role.value ? 'var(--color-primary)' : 'var(--color-base-300)',
+                    backgroundColor: formData.role === role.value ? 'var(--color-primary)' : 'var(--color-base-200)',
+                    opacity: formData.role === role.value ? '0.9' : '0.7'
+                  }}
                 >
                   <input
                     type="radio"
@@ -285,8 +305,8 @@ function RegisterForm({ onRegister }) {
                     className="sr-only"
                   />
                   <span className="text-2xl mb-1">{role.icon}</span>
-                  <span className="text-sm font-medium text-gray-300">{role.label}</span>
-                  <span className="text-xs text-gray-500">{role.desc}</span>
+                  <span className="text-sm font-medium" style={{color: 'var(--color-base-content)'}}>{role.label}</span>
+                  <span className="text-xs" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>{role.desc}</span>
                 </label>
               </AnimatedContainer>
             ))}
@@ -296,7 +316,11 @@ function RegisterForm({ onRegister }) {
         <AnimatedContainer animation="slide-up" delay={400}>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="w-full py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+            style={{
+              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
+              color: 'var(--color-primary-content)'
+            }}
           >
             <span className="flex items-center justify-center">
               Create Account
@@ -309,20 +333,20 @@ function RegisterForm({ onRegister }) {
       </form>
 
       <AnimatedContainer animation="fade-in" delay={500} className="text-center mt-6">
-        <p className="text-gray-400">
+        <p style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
           Already have an account?{' '}
-          <Link to="/login" className="text-blue-400 hover:text-blue-300 transition-colors font-medium">
+          <Link to="/login" className="transition-colors font-medium hover:opacity-80" style={{color: 'var(--color-primary)'}}>
             Sign in →
           </Link>
         </p>
       </AnimatedContainer>
       
-      <AnimatedContainer animation="fade-in" delay={600} className="text-center mt-4 text-gray-500 text-xs">
-        <p>
+      <AnimatedContainer animation="fade-in" delay={600} className="text-center mt-4 text-xs">
+        <p style={{color: 'var(--color-base-content)', opacity: '0.5'}}>
           By creating an account, you agree to our{' '}
-          <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">Terms</a>
+          <a href="#" className="transition-colors hover:opacity-80" style={{color: 'var(--color-primary)'}}>Terms</a>
           {' '}and{' '}
-          <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">Privacy Policy</a>
+          <a href="#" className="transition-colors hover:opacity-80" style={{color: 'var(--color-primary)'}}>Privacy Policy</a>
         </p>
       </AnimatedContainer>
     </div>

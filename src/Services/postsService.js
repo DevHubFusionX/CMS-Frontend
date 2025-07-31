@@ -87,4 +87,22 @@ export const postsService = {
       throw new Error(error.response?.data?.message || 'Failed to delete post');
     }
   },
+  
+  duplicatePost: async (id) => {
+    try {
+      const response = await api.post(`/posts/${id}/duplicate`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to duplicate post');
+    }
+  },
+  
+  getRelatedPosts: async (id) => {
+    try {
+      const response = await api.get(`/posts/${id}/related`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch related posts');
+    }
+  },
 };

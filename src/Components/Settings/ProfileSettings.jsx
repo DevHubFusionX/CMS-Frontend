@@ -41,16 +41,20 @@ const ProfileSettings = ({ userData, onUpdate }) => {
   return (
     <>
       <div className="col-span-1 md:col-span-2">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Profile Settings</h2>
-        <p className="text-sm text-gray-500 mb-6">Update your personal information and profile picture.</p>
+        <h2 className="text-lg font-medium mb-4" style={{color: 'var(--color-base-content)'}}>Profile Settings</h2>
+        <p className="text-sm mb-6" style={{color: 'var(--color-base-content)'}}>Update your personal information and profile picture.</p>
       </div>
       
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <h3 className="text-md font-medium text-gray-900 mb-4">Personal Information</h3>
+      <div className="rounded-lg border shadow-lg p-6 backdrop-blur-sm" style={{
+        backgroundColor: 'var(--color-base-200)',
+        borderColor: 'var(--color-base-300)',
+        background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+      }}>
+        <h3 className="text-md font-medium mb-4" style={{color: 'var(--color-base-content)'}}>Personal Information</h3>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-sm font-medium" style={{color: 'var(--color-base-content)'}}>
               Full Name
             </label>
             <input
@@ -59,13 +63,20 @@ const ProfileSettings = ({ userData, onUpdate }) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-xl border shadow-sm focus:ring-2 focus:ring-offset-2 transition-all duration-300 px-4 py-3"
+              style={{
+                backgroundColor: 'var(--color-base-200)',
+                borderColor: 'var(--color-base-300)',
+                color: 'var(--color-base-content)',
+                focusRingColor: 'var(--color-primary)',
+                focusBorderColor: 'var(--color-primary)'
+              }}
               placeholder="Enter your full name"
             />
           </div>
           
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium" style={{color: 'var(--color-base-content)'}}>
               Email Address
             </label>
             <input
@@ -74,7 +85,14 @@ const ProfileSettings = ({ userData, onUpdate }) => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-xl border shadow-sm focus:ring-2 focus:ring-offset-2 transition-all duration-300 px-4 py-3"
+              style={{
+                backgroundColor: 'var(--color-base-200)',
+                borderColor: 'var(--color-base-300)',
+                color: 'var(--color-base-content)',
+                focusRingColor: 'var(--color-primary)',
+                focusBorderColor: 'var(--color-primary)'
+              }}
               placeholder="Enter your email address"
             />
           </div>
@@ -83,9 +101,14 @@ const ProfileSettings = ({ userData, onUpdate }) => {
             <button
               type="submit"
               disabled={loading}
-              className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              className={`inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 hover:shadow-xl transform hover:scale-105 ${
                 loading ? 'opacity-75 cursor-not-allowed' : ''
               }`}
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                color: 'var(--color-primary-content)',
+                focusRingColor: 'var(--color-primary)'
+              }}
             >
               {loading ? (
                 <>
@@ -103,8 +126,12 @@ const ProfileSettings = ({ userData, onUpdate }) => {
         </form>
       </div>
       
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-        <h3 className="text-md font-medium text-gray-900 mb-4">Profile Picture</h3>
+      <div className="rounded-lg border shadow-lg p-6 backdrop-blur-sm" style={{
+        backgroundColor: 'var(--color-base-200)',
+        borderColor: 'var(--color-base-300)',
+        background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+      }}>
+        <h3 className="text-md font-medium mb-4" style={{color: 'var(--color-base-content)'}}>Profile Picture</h3>
         <AvatarUpload 
           currentAvatar={formData.avatar} 
           onAvatarChange={handleAvatarChange} 

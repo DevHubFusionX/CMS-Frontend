@@ -36,14 +36,14 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-gray-900">
+    <section id="how-it-works" className="py-24" style={{backgroundColor: 'var(--color-base-200)'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedContainer animation="fade-in">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6" style={{color: 'var(--color-base-content)'}}>
               How It Works
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl max-w-3xl mx-auto" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
               Get started in minutes with our intuitive workflow
             </p>
           </div>
@@ -54,15 +54,15 @@ const HowItWorksSection = () => {
             <AnimatedContainer key={index} animation="slide-up" delay={index * 200}>
               <div className="text-center">
                 <div className="relative mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white mx-auto shadow-xl">
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto shadow-xl" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
                     {step.icon}
                   </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" style={{background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-accent) 100%)', color: 'var(--color-secondary-content)'}}>
                     {step.step}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{step.title}</h3>
-                <p className="text-gray-400 text-lg leading-relaxed">{step.description}</p>
+                <h3 className="text-2xl font-bold mb-4" style={{color: 'var(--color-base-content)'}}>{step.title}</h3>
+                <p className="text-lg leading-relaxed" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>{step.description}</p>
               </div>
             </AnimatedContainer>
           ))}

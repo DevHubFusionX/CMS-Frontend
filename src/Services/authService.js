@@ -6,16 +6,19 @@ export const authService = {
       const response = await api.post('/auth/login', credentials);
       
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('token', response.data.token);
       }
       
       if (response.data.user) {
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        sessionStorage.setItem('user', JSON.stringify(response.data.user));
       }
       
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Login failed');
+      const errorData = error.response?.data;
+      const customError = new Error(errorData?.message || 'Login failed');
+      customError.response = error.response;
+      throw customError;
     }
   },
   
@@ -23,8 +26,8 @@ export const authService = {
     try {
       const response = await api.post('/auth/register', userData);
       
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('user', JSON.stringify(response.data.user));
       
       return response.data;
     } catch (error) {
@@ -61,7 +64,25 @@ export const authService = {
   },
   
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+  },
+  
+  verifyOTP: async (email, otp) => {
+    try {
+      const response = await api.post('/auth/verify-otp', { email, otp });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'OTP verification failed');
+    }
+  },
+  
+  resendVerification: async (email) => {
+    try {
+      const response = await api.post('/auth/resend-verification', { email });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to resend verification email');
+    }
   },
 };

@@ -1,11 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Services';
+import { usePosts } from '../Services/PostsContext';
+import { useCategories } from '../Services/CategoriesContext';
+import SubscriberNavigation from '../Components/Dashboard/SubscriberNavigation';
+import WelcomeSection from '../Components/Dashboard/WelcomeSection';
+import SearchAndFilters from '../Components/Dashboard/SearchAndFilters';
+import ArticlesList from '../Components/Dashboard/ArticlesList';
+import { HiBookmark, HiClock, HiBell, HiUser } from 'react-icons/hi';
 
 const SubscriberDashboard = () => {
   const { user, logout } = useAuth();
+  const postsContext = usePosts();
+  const categoriesContext = useCategories();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+
+  const posts = postsContext?.posts || [];
+  const loading = postsContext?.loading || false;
+  const categories = categoriesContext?.categories || [];
+
+  const [bookmarkedPosts, setBookmarkedPosts] = useState(new Set());
+  const [readingHistory, setReadingHistory] = useState([]);
+  const [activeTab, setActiveTab] = useState('recent');
+
+  useEffect(() => {
+    // Load user preferences from localStorage
+    const savedBookmarks = localStorage.getItem(`bookmarks_${user?.id}`);
+    const savedHistory = localStorage.getItem(`history_${user?.id}`);
+    
+    if (savedBookmarks) {
+      setBookmarkedPosts(new Set(JSON.parse(savedBookmarks)));
+    }
+    if (savedHistory) {
+      setReadingHistory(JSON.parse(savedHistory));
+    }
+  }, [user?.id]);
+
+  const toggleBookmark = (postId) => {
+    const newBookmarks = new Set(bookmarkedPosts);
+    if (newBookmarks.has(postId)) {
+      newBookmarks.delete(postId);
+    } else {
+      newBookmarks.add(postId);
+    }
+    setBookmarkedPosts(newBookmarks);
+    localStorage.setItem(`bookmarks_${user?.id}`, JSON.stringify([...newBookmarks]));
+  };
+
+  const addToHistory = (post) => {
+    const newHistory = [post, ...readingHistory.filter(p => p._id !== post._id)].slice(0, 10);
+    setReadingHistory(newHistory);
+    localStorage.setItem(`history_${user?.id}`, JSON.stringify(newHistory));
+  };
+
+  const publishedPosts = posts.filter(post => post?.status === 'published');
+  const recentPosts = publishedPosts.slice(0, 6);
+  const bookmarkedPostsList = publishedPosts.filter(post => bookmarkedPosts.has(post._id));
+  const recentlyRead = readingHistory.slice(0, 3);
+
+  const filteredPosts = publishedPosts.filter(post => {
+    const matchesSearch = post?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post?.content?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || 
+                           post?.category?.name === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const handleLogout = () => {
     logout();
@@ -13,172 +75,177 @@ const SubscriberDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navigation */}
-      <nav className="bg-gray-800 border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <button
-                onClick={() => navigate('/subscriber-home')}
-                className="text-xl font-bold text-white hover:text-gray-300"
-              >
-                CMS
-              </button>
-              <button
-                onClick={() => navigate('/blog')}
-                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Blog
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300 text-sm">
-                {user?.name || user?.username}
-              </span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div 
+      className="min-h-screen"
+      style={{ backgroundColor: 'var(--color-base-100)', color: 'var(--color-base-content)' }}
+    >
+      <SubscriberNavigation user={user} onLogout={handleLogout} />
 
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">My Dashboard</h1>
-          <p className="text-gray-300 mt-2">Manage your profile and reading experience</p>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            <WelcomeSection user={user} />
+
+            <SearchAndFilters 
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              categories={categories}
+            />
+
+            {/* Tab Navigation */}
+            <div className="flex space-x-1 mb-6">
+              {[
+                { id: 'recent', label: 'Recent Posts', icon: HiClock },
+                { id: 'bookmarks', label: 'My Bookmarks', icon: HiBookmark },
+                { id: 'history', label: 'Reading History', icon: HiBell }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                    activeTab === tab.id ? 'shadow-md' : 'hover:shadow-sm'
+                  }`}
+                  style={{
+                    backgroundColor: activeTab === tab.id ? 'var(--color-primary)' : 'var(--color-base-200)',
+                    color: activeTab === tab.id ? 'var(--color-primary-content)' : 'var(--color-base-content)'
+                  }}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  <span className="text-sm font-medium">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Content based on active tab */}
+            {activeTab === 'recent' && (
+              <ArticlesList 
+                posts={searchTerm || selectedCategory !== 'All' ? filteredPosts : recentPosts}
+                loading={loading}
+                title="Recent Articles"
+                onPostClick={addToHistory}
+                bookmarkedPosts={bookmarkedPosts}
+                onToggleBookmark={toggleBookmark}
+              />
+            )}
+            
+            {activeTab === 'bookmarks' && (
+              <ArticlesList 
+                posts={bookmarkedPostsList}
+                loading={false}
+                title="My Bookmarked Posts"
+                onPostClick={addToHistory}
+                bookmarkedPosts={bookmarkedPosts}
+                onToggleBookmark={toggleBookmark}
+                emptyMessage="No bookmarked posts yet. Start bookmarking posts you want to read later!"
+              />
+            )}
+            
+            {activeTab === 'history' && (
+              <ArticlesList 
+                posts={readingHistory}
+                loading={false}
+                title="Reading History"
+                onPostClick={addToHistory}
+                bookmarkedPosts={bookmarkedPosts}
+                onToggleBookmark={toggleBookmark}
+                emptyMessage="No reading history yet. Start reading some posts!"
+              />
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Stats Card */}
+            <div 
+              className="p-4 rounded-xl shadow-lg"
+              style={{ 
+                backgroundColor: 'var(--color-base-200)',
+                background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+              }}
+            >
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'var(--color-primary-content)'
+                }}>
+                  <HiUser className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold" style={{ color: 'var(--color-base-content)' }}>
+                    {user?.name || 'Subscriber'}
+                  </h3>
+                  <p className="text-xs" style={{ color: 'var(--color-base-content)', opacity: 0.7 }}>
+                    {user?.role?.name || 'subscriber'}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="text-center p-2 rounded-lg" style={{ backgroundColor: 'var(--color-base-100)' }}>
+                  <div className="text-lg font-bold" style={{ color: 'var(--color-primary)' }}>
+                    {bookmarkedPosts.size}
+                  </div>
+                  <div className="text-xs" style={{ color: 'var(--color-base-content)', opacity: 0.7 }}>
+                    Bookmarks
+                  </div>
+                </div>
+                <div className="text-center p-2 rounded-lg" style={{ backgroundColor: 'var(--color-base-100)' }}>
+                  <div className="text-lg font-bold" style={{ color: 'var(--color-secondary)' }}>
+                    {readingHistory.length}
+                  </div>
+                  <div className="text-xs" style={{ color: 'var(--color-base-content)', opacity: 0.7 }}>
+                    Read Posts
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div 
+              className="p-4 rounded-xl shadow-lg"
+              style={{ 
+                backgroundColor: 'var(--color-base-200)',
+                background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`
+              }}
+            >
+              <h3 
+                className="text-lg font-semibold mb-4"
+                style={{ color: 'var(--color-base-content)' }}
+              >
+                Quick Actions
+              </h3>
+              <div className="space-y-2">
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="w-full p-3 rounded-lg text-left transition-all duration-200 hover:shadow-md"
+                  style={{ backgroundColor: 'var(--color-base-100)' }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <HiUser className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
+                    <span className="text-sm font-medium" style={{ color: 'var(--color-base-content)' }}>
+                      Edit Profile
+                    </span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setActiveTab('bookmarks')}
+                  className="w-full p-3 rounded-lg text-left transition-all duration-200 hover:shadow-md"
+                  style={{ backgroundColor: 'var(--color-base-100)' }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <HiBookmark className="w-4 h-4" style={{ color: 'var(--color-secondary)' }} />
+                    <span className="text-sm font-medium" style={{ color: 'var(--color-base-content)' }}>
+                      View Bookmarks ({bookmarkedPosts.size})
+                    </span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Tab Navigation */}
-        <div className="border-b border-gray-700 mb-8">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => setActiveTab('profile')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'profile'
-                  ? 'border-blue-500 text-blue-400'
-                  : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300'
-              }`}
-            >
-              Profile
-            </button>
-            <button
-              onClick={() => setActiveTab('comments')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'comments'
-                  ? 'border-blue-500 text-blue-400'
-                  : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300'
-              }`}
-            >
-              My Comments
-            </button>
-            <button
-              onClick={() => setActiveTab('reading')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'reading'
-                  ? 'border-blue-500 text-blue-400'
-                  : 'border-transparent text-gray-300 hover:text-gray-200 hover:border-gray-300'
-              }`}
-            >
-              Reading Activity
-            </button>
-          </nav>
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'profile' && (
-          <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-6">Profile Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Name</label>
-                <div className="bg-gray-700 rounded-md px-3 py-2 text-white">
-                  {user?.name || 'Not provided'}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
-                <div className="bg-gray-700 rounded-md px-3 py-2 text-white">
-                  {user?.username || 'Not provided'}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                <div className="bg-gray-700 rounded-md px-3 py-2 text-white">
-                  {user?.email || 'Not provided'}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Role</label>
-                <div className="bg-gray-700 rounded-md px-3 py-2 text-white capitalize">
-                  {user?.role?.name || user?.legacyRole || 'Subscriber'}
-                </div>
-              </div>
-            </div>
-            <div className="mt-6">
-              <button
-                onClick={() => navigate('/profile')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                Edit Profile
-              </button>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'comments' && (
-          <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-6">My Comments</h2>
-            <div className="text-center py-12">
-              <svg className="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              <p className="text-gray-400 mb-4">No comments yet</p>
-              <button
-                onClick={() => navigate('/blog')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                Start Reading & Commenting
-              </button>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'reading' && (
-          <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-6">Reading Activity</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-blue-400 mb-2">0</div>
-                <div className="text-gray-300 text-sm">Articles Read</div>
-              </div>
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-green-400 mb-2">0</div>
-                <div className="text-gray-300 text-sm">Comments Posted</div>
-              </div>
-              <div className="bg-gray-700 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-purple-400 mb-2">0</div>
-                <div className="text-gray-300 text-sm">Days Active</div>
-              </div>
-            </div>
-            <div className="text-center py-8">
-              <svg className="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <p className="text-gray-400 mb-4">Start building your reading history</p>
-              <button
-                onClick={() => navigate('/blog')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                Explore Blog Posts
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

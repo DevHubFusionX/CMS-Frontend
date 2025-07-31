@@ -1,0 +1,25 @@
+// Import only used icons to reduce bundle size
+export { 
+  FiSearch, 
+  FiX, 
+  FiEye, 
+  FiTrendingUp, 
+  FiCalendar,
+  FiEdit,
+  FiTrash2,
+  FiCopy,
+  FiPlus,
+  FiSave,
+  FiSettings,
+  FiUser,
+  FiHome,
+  FiFileText,
+  FiImage,
+  FiTag,
+  FiFolder,
+  FiUsers,
+  FiBarChart3,
+  FiMenu,
+  FiBell,
+  FiLogOut
+} from 'react-icons/fi';

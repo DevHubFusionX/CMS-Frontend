@@ -9,15 +9,15 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if user is logged in on component mount
-    const storedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const storedUser = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('token');
     
     if (storedUser && token) {
       setUser(JSON.parse(storedUser));
     } else {
       // Clear any inconsistent state
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
     }
     setLoading(false);
   }, []);
@@ -28,28 +28,31 @@ export const AuthProvider = ({ children }) => {
       const userData = await authService.getCurrentUser();
       if (userData) {
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+        sessionStorage.setItem('user', JSON.stringify(userData));
       }
     } catch (error) {
       console.error('Error refreshing user data:', error);
     }
   };
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    sessionStorage.setItem('user', JSON.stringify(userData));
+    if (token) {
+      sessionStorage.setItem('token', token);
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
   };
   
   // Update current user data
   const updateCurrentUser = (userData) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   return (

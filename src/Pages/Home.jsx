@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Services';
+import FusionXLoader from '../Components/Common/FusionXLoader';
 import {
   Navigation,
   HeroSection,
@@ -17,20 +18,22 @@ const Home = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Redirect authenticated users based on role
-  useEffect(() => {
-    if (user) {
-      const userRole = user?.legacyRole || user?.role?.name || user?.role;
-      if (['admin', 'super_admin', 'editor', 'author', 'contributor'].includes(userRole)) {
-        navigate('/dashboard');
-      } else if (userRole === 'subscriber') {
-        navigate('/subscriber-home');
-      }
-    }
-  }, [user, navigate]);
+
 
   useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
@@ -52,7 +55,7 @@ const Home = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLoading]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -61,8 +64,19 @@ const Home = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: 'var(--color-base-100)'}}>
+        <FusionXLoader 
+          size="lg" 
+          message="Welcome to FusionX CMS..." 
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-900 min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{backgroundColor: 'var(--color-base-100)'}}>
       <Navigation 
         isScrolled={isScrolled}
         activeSection={activeSection}
