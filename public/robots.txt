@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /blog
+Allow: /blog/*
+
+Disallow: /dashboard
+Disallow: /dashboard/*
+Disallow: /login
+Disallow: /register
+Disallow: /admin
+Disallow: /api
+
+Sitemap: https://fusionx-nine.vercel.app/sitemap.xml

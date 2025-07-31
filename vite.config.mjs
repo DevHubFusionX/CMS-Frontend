@@ -10,19 +10,36 @@ export default defineConfig({
     compression()
   ],
   build: {
-    sourcemap: true,
+    sourcemap: false,
+    target: 'es2020',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info'],
+        unused: true
+      },
+      mangle: true
+    },
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['react-icons', 'framer-motion'],
-          editor: ['@tinymce/tinymce-react', '@tiptap/react', '@tiptap/starter-kit'],
-          utils: ['axios', '@tanstack/react-query'],
-          socket: ['socket.io-client']
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react';
+            }
+            if (id.includes('tinymce') || id.includes('tiptap')) {
+              return 'editor';
+            }
+            if (id.includes('framer-motion') || id.includes('react-icons')) {
+              return 'ui';
+            }
+            return 'vendor';
+          }
         }
       }
     },
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 500
   }
 });

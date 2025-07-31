@@ -2,9 +2,14 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import FusionXLoader from "./Components/Common/FusionXLoader";
+import CriticalLoader from "./Components/Common/CriticalLoader";
+import PreloadCritical from "./Components/Common/PreloadCritical";
 
-// Lazy load heavy components
+// Only import what's needed for initial load
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+
+// Lazy load everything else
 const Home = React.lazy(() => import("./Pages/Home"));
 const Blog = React.lazy(() => import("./Pages/Blog"));
 const BlogPost = React.lazy(() => import("./Pages/BlogPost"));
@@ -13,25 +18,12 @@ const ProfilePage = React.lazy(() => import("./Pages/Profile").then(module => ({
 const PreviewPost = React.lazy(() => import("./Pages/Posts").then(module => ({ default: module.PreviewPost })));
 const SubscriberHome = React.lazy(() => import("./Pages/SubscriberHome"));
 const SubscriberDashboard = React.lazy(() => import("./Pages/SubscriberDashboard"));
-
-// Lazy load all remaining pages
-const Login = React.lazy(() => import("./Pages/Login"));
-const Register = React.lazy(() => import("./Pages/Register"));
 const VerifyOTP = React.lazy(() => import("./Pages/VerifyOTP"));
 const ForgotPassword = React.lazy(() => import("./Pages/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("./Pages/ResetPassword"));
 
 
-import {
-  AuthProvider,
-  MediaProvider,
-  PostsProvider,
-  UsersProvider,
-  CategoriesProvider,
-  TagsProvider,
-  CommentsProvider,
-  AnalyticsProvider
-} from "./Services";
+import { AuthProvider } from "./Services";
 import { ThemeProvider } from "./Context/ThemeContext";
 import { NotificationProvider } from "./Context/NotificationContext";
 import { SocketProvider } from "./Context/SocketContext";
@@ -59,7 +51,7 @@ const App = () => {
             <AuthProvider>
               <SocketProvider>
                 <BrowserRouter>
-                  <Suspense fallback={<FusionXLoader />}>
+                  <Suspense fallback={<CriticalLoader />}>
                     <Routes>
                     {/* Visitor routes */}
                     <Route path="/" element={
@@ -87,17 +79,7 @@ const App = () => {
 
 
 
-                    <Route path="/preview/post" element={
-                      <PostsProvider>
-                        <MediaProvider>
-                          <CategoriesProvider>
-                            <TagsProvider>
-                              <PreviewPost />
-                            </TagsProvider>
-                          </CategoriesProvider>
-                        </MediaProvider>
-                      </PostsProvider>
-                    } />
+                    <Route path="/preview/post" element={<PreviewPost />} />
                     {/* <Route path="/editor-demo" element={
             <RoleBasedRoute allowedRoles={['admin', 'editor', 'author']}>
               <EditorDemo />
@@ -107,50 +89,26 @@ const App = () => {
                     {/* Subscriber routes */}
                     <Route path="/subscriber-home" element={
                       <RoleBasedRoute allowedRoles={['subscriber']}>
-                        <PostsProvider>
-                          <CategoriesProvider>
-                            <SubscriberHome />
-                          </CategoriesProvider>
-                        </PostsProvider>
+                        <SubscriberHome />
                       </RoleBasedRoute>
                     } />
                     <Route path="/subscriber-dashboard" element={
                       <RoleBasedRoute allowedRoles={['subscriber']}>
-                        <PostsProvider>
-                          <CategoriesProvider>
-                            <SubscriberDashboard />
-                          </CategoriesProvider>
-                        </PostsProvider>
+                        <SubscriberDashboard />
                       </RoleBasedRoute>
                     } />
 
                     {/* Subscriber and above routes */}
                     <Route path="/profile" element={
                       <RoleBasedRoute allowedRoles={['subscriber', 'contributor', 'author', 'editor', 'admin', 'super_admin']}>
-                        <UsersProvider>
-                          <ProfilePage />
-                        </UsersProvider>
+                        <ProfilePage />
                       </RoleBasedRoute>
                     } />
 
                     {/* Dashboard routes - Contributor and above */}
                     <Route path="/dashboard/*" element={
                       <RoleBasedRoute allowedRoles={['contributor', 'author', 'editor', 'admin', 'super_admin']}>
-                        <MediaProvider>
-                          <PostsProvider>
-                            <CategoriesProvider>
-                              <TagsProvider>
-                                <UsersProvider>
-                                  <CommentsProvider>
-                                    <AnalyticsProvider>
-                                      <Dashboard />
-                                    </AnalyticsProvider>
-                                  </CommentsProvider>
-                                </UsersProvider>
-                              </TagsProvider>
-                            </CategoriesProvider>
-                          </PostsProvider>
-                        </MediaProvider>
+                        <Dashboard />
                       </RoleBasedRoute>
                     } />
 
@@ -173,6 +131,7 @@ const App = () => {
         </ThemeProvider>
       </ErrorBoundary>
       <SpeedInsights />
+      <PreloadCritical />
     </QueryClientProvider>
   );
 };
