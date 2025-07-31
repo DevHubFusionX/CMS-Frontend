@@ -16,7 +16,7 @@ const SidebarHeader = ({ collapsed, isMobile, onMobileClose, onToggleCollapse, s
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold text-white drop-shadow-lg">
-              Fusionyyyy
+              FusionX
             </span>
             <span className="text-xs -mt-1 text-white/80 font-medium">
               CMS Dashboard
