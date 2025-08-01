@@ -27,8 +27,10 @@ const PreviewPost = () => {
   return (
     <div className="min-h-screen" style={{backgroundColor: 'var(--color-base-100)'}}>
       <PreviewHeader status={post.status} />
-      <PreviewContent post={post} />
-      <PreviewMetadata categories={post.categories} tags={post.tags} />
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <PreviewContent post={post} />
+        <PreviewMetadata categories={post.categories} tags={post.tags} />
+      </div>
     </div>
   );
 };
