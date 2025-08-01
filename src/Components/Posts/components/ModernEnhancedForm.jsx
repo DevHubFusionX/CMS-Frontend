@@ -122,6 +122,12 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
     if (formData.metaDescription && formData.metaDescription.length > 160) {
       newErrors.metaDescription = 'Meta description cannot be more than 160 characters';
     }
+    if (formData.status === 'scheduled' && !formData.scheduledDate) {
+      newErrors.scheduledDate = 'Scheduled date is required when status is scheduled';
+    }
+    if (formData.scheduledDate && new Date(formData.scheduledDate) <= new Date()) {
+      newErrors.scheduledDate = 'Scheduled date must be in the future';
+    }
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -294,6 +300,36 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
                   {userRole !== 'contributor' && <option value="scheduled">Scheduled</option>}
                 </select>
               </div>
+              
+              {formData.status === 'scheduled' && (
+                <div>
+                  <label htmlFor="scheduledDate" className="block text-sm font-medium mb-2" style={{color: 'var(--color-base-content)'}}>
+                    Schedule Date & Time <span style={{color: 'var(--color-error)'}}>*</span>
+                  </label>
+                  <input
+                    type="datetime-local"
+                    id="scheduledDate"
+                    name="scheduledDate"
+                    value={formData.scheduledDate ? new Date(formData.scheduledDate).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => {
+                      const date = e.target.value ? new Date(e.target.value).toISOString() : null;
+                      setFormData(prev => ({ ...prev, scheduledDate: date }));
+                    }}
+                    min={new Date(Date.now() + 5 * 60000).toISOString().slice(0, 16)}
+                    className="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:border-transparent"
+                    style={{
+                      backgroundColor: 'var(--color-base-100)',
+                      color: 'var(--color-base-content)',
+                      borderColor: 'var(--color-base-300)'
+                    }}
+                    onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px var(--color-primary)'}
+                    onBlur={(e) => e.target.style.boxShadow = 'none'}
+                  />
+                  <p className="mt-1 text-xs opacity-70" style={{color: 'var(--color-base-content)'}}>
+                    Post will be automatically published at this time
+                  </p>
+                </div>
+              )}
               
               <div>
                 <label htmlFor="language" className="block text-sm font-medium mb-2" style={{color: 'var(--color-base-content)'}}>
