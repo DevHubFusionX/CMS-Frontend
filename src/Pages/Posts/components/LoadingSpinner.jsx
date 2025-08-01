@@ -9,7 +9,7 @@ const LoadingSpinner = ({ size = 'lg', message = 'Loading posts...' }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-16 space-y-4">
+    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
       {/* Animated Spinner */}
       <div className="relative">
         <div className={`${sizeClasses[size]} border-4 border-gray-200 dark:border-gray-700 rounded-full animate-spin`}></div>
