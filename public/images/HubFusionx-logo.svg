@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00bfff" />
+      <stop offset="50%" style="stop-color:#1e90ff" />
+      <stop offset="100%" style="stop-color:#87ceeb" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main background -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+  
+  <!-- Large F -->
+  <text x="18" y="45" font-family="Arial Black, sans-serif" font-size="32" font-weight="900" fill="white">F</text>
+  
+  <!-- Small X -->
+  <text x="42" y="28" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="white">X</text>
+  
+  <!-- Content blocks -->
+  <rect x="8" y="8" width="6" height="6" rx="1" fill="white" opacity="0.8"/>
+  <rect x="50" y="8" width="6" height="6" rx="1" fill="white" opacity="0.8"/>
+  <rect x="50" y="50" width="6" height="6" rx="1" fill="white" opacity="0.8"/>
+</svg>
