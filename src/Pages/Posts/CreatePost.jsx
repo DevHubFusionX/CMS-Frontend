@@ -52,13 +52,13 @@ const CreatePost = () => {
         }}></div>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-6">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <button 
               onClick={() => navigate('/dashboard/posts')}
-              className="group p-3 rounded-2xl border backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="group p-2 sm:p-3 rounded-xl sm:rounded-2xl border backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               style={{
                 backgroundColor: 'var(--color-base-200)',
                 borderColor: 'var(--color-base-300)'
@@ -74,19 +74,19 @@ const CreatePost = () => {
                 e.target.style.color = 'var(--color-base-content)';
               }}
             >
-              <svg className="w-5 h-5 transition-colors" style={{color: 'var(--color-base-content)'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-colors" style={{color: 'var(--color-base-content)'}} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <div>
-              <h1 className="text-2xl font-bold" style={{color: 'var(--color-base-content)'}}>Create New Post</h1>
-              <p className="text-sm" style={{color: 'var(--color-base-content)'}}>Write and publish your content</p>
+              <h1 className="text-xl sm:text-2xl font-bold" style={{color: 'var(--color-base-content)'}}>Create New Post</h1>
+              <p className="text-xs sm:text-sm" style={{color: 'var(--color-base-content)'}}>Write and publish your content</p>
             </div>
           </div>
         </div>
 
         {/* Editor Container */}
-        <div className="backdrop-blur-sm rounded-2xl border shadow-xl p-6" style={{
+        <div className="backdrop-blur-sm rounded-xl sm:rounded-2xl border shadow-xl p-3 sm:p-4 lg:p-6" style={{
           backgroundColor: 'var(--color-base-200)',
           borderColor: 'var(--color-base-300)',
           background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`

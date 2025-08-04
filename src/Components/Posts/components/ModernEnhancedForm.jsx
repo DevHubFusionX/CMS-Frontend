@@ -151,12 +151,12 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
   };
   
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
         {/* Main Content Column */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="xl:col-span-2 space-y-4 sm:space-y-6">
           {/* Title */}
-          <div className="rounded-xl p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
+          <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
             <label htmlFor="title" className="block text-sm font-medium mb-2" style={{color: 'var(--color-base-content)'}}>
               Title <span style={{color: 'var(--color-error)'}}>*</span>
             </label>
@@ -166,7 +166,7 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:border-transparent transition-all duration-200 text-sm sm:text-base"
               style={{
                 backgroundColor: 'var(--color-base-100)',
                 color: 'var(--color-base-content)',
@@ -247,8 +247,8 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
           </div>
           
           {/* Media Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="rounded-xl p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
               <MediaField
                 label="Featured Image"
                 value={formData.featuredImage}
@@ -256,7 +256,7 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
               />
             </div>
             
-            <div className="rounded-xl p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
+            <div className="rounded-lg sm:rounded-xl p-3 sm:p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
               <MediaField
                 label="Gallery Images"
                 value={formData.galleryImages}
@@ -268,7 +268,7 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
         </div>
         
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Publishing Options */}
           <div className="rounded-xl p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{color: 'var(--color-base-content)'}}>
@@ -570,7 +570,7 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
           <button
             type="submit"
             disabled={loading}
-            className={`w-full px-6 py-3 font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 ${
+            className={`w-full px-4 sm:px-6 py-3 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base ${
               loading ? 'opacity-75 cursor-not-allowed' : ''
             }`}
             style={{
