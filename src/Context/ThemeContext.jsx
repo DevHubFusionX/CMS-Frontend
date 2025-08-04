@@ -12,7 +12,7 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('fusionx-theme');
+    const saved = localStorage.getItem('HubFusionx-theme');
     return saved || 'light';
   });
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -22,13 +22,13 @@ export const ThemeProvider = ({ children }) => {
     
     if (theme === 'dark') {
       root.classList.add('dark');
-      root.setAttribute('data-theme', 'fusionx-dark');
+      root.setAttribute('data-theme', 'HubFusionx-dark');
     } else {
       root.classList.remove('dark');
-      root.setAttribute('data-theme', 'fusionx-light');
+      root.setAttribute('data-theme', 'HubFusionx-light');
     }
     
-    localStorage.setItem('fusionx-theme', theme);
+    localStorage.setItem('HubFusionx-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

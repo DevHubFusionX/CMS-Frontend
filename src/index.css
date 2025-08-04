@@ -13,7 +13,7 @@
 @import './styles/login.css';
 @import './styles/forms.css';
 @import './styles/feature-cards.css';
-@import './styles/fusionx-loader.css';
+@import './styles/HubFusionx-loader.css';
 @import './styles/responsive.css'; */
 
 /* Custom Scrollbar */
@@ -28,13 +28,21 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary),
+    var(--color-accent)
+  );
   transform: scale(1.1);
 }
 
@@ -50,10 +58,14 @@
 
 /* Global font family with rare fonts */
 * {
-  font-family: 'Crimson Pro', 'Palatino Linotype', 'Book Antiqua', 'URW Palladio L', serif;
+  font-family: 'Crimson Pro', 'Palatino Linotype', 'Book Antiqua',
+    'URW Palladio L', serif;
 }
 
 /* Monospace elements use rare coding font */
-code, pre, .font-mono {
-  font-family: 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+code,
+pre,
+.font-mono {
+  font-family: 'Fira Code', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono',
+    monospace;
 }

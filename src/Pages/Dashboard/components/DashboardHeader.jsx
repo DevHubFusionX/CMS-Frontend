@@ -42,7 +42,7 @@ const DashboardHeader = () => {
             </div>
           </div>
           <p className="text-sm sm:text-base hidden sm:block text-white/80 drop-shadow-sm">
-            Welcome back to your FusionX content management system.
+            Welcome back to your HubFusionx content management system.
           </p>
         </div>
         

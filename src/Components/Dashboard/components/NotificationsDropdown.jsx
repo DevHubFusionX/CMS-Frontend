@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../Services/AuthContext';
 import { io } from 'socket.io-client';
 
 const NotificationsDropdown = () => {
-  const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const notificationsRef = useRef(null);
   const socketRef = useRef(null);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   
   const unreadCount = notifications.filter(n => !n.read).length;
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
-        setShowNotifications(false);
-      }
-    };
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    // Load notifications from localStorage
+    const savedNotifications = localStorage.getItem('notifications');
+    if (savedNotifications) {
+      setNotifications(JSON.parse(savedNotifications));
+    }
   }, []);
 
   useEffect(() => {
@@ -81,7 +78,11 @@ const NotificationsDropdown = () => {
         author: data.author
       };
       
-      setNotifications(prev => [newNotification, ...prev]);
+      setNotifications(prev => {
+        const updated = [newNotification, ...prev];
+        localStorage.setItem('notifications', JSON.stringify(updated));
+        return updated;
+      });
       
       // Show browser notification if permission granted
       if (Notification.permission === 'granted') {
@@ -100,20 +101,14 @@ const NotificationsDropdown = () => {
     };
   }, [user]);
 
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  };
-
-  const markAsRead = (id) => {
-    setNotifications(prev => prev.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
+  const handleNotificationClick = () => {
+    navigate('/dashboard/notifications');
   };
 
   return (
-    <div className="relative" ref={notificationsRef}>
+    <div className="relative">
       <button
-        onClick={() => setShowNotifications(!showNotifications)}
+        onClick={handleNotificationClick}
         className="relative p-2.5 rounded-xl transition-all duration-300 hover:shadow-lg border backdrop-blur-sm"
         style={{
           backgroundColor: 'var(--color-base-200)',
@@ -146,64 +141,7 @@ const NotificationsDropdown = () => {
         )}
       </button>
 
-      {showNotifications && (
-        <div className="absolute right-0 mt-2 w-80 rounded-2xl shadow-2xl backdrop-blur-sm z-50 border" 
-             style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
-          <div className="p-4 border-b" style={{borderColor: 'var(--color-base-300)'}}>
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold" style={{color: 'var(--color-base-content)'}}>Notifications</h3>
-              {unreadCount > 0 && (
-                <button onClick={markAllAsRead} className="text-sm" style={{color: 'var(--color-primary)'}}>
-                  Mark all as read
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="max-h-96 overflow-y-auto">
-            {notifications.length === 0 ? (
-              <div className="p-4 text-center" style={{color: 'var(--color-base-content)', opacity: '0.6'}}>
-                <p className="text-sm">No notifications yet</p>
-                <p className="text-xs mt-1">You'll see notifications when authors create posts</p>
-                <button 
-                  onClick={() => {
-                    const testNotification = {
-                      id: Date.now(),
-                      message: 'Test notification - Socket.IO working!',
-                      time: 'Just now',
-                      read: false,
-                      type: 'test',
-                      avatar: '🧪',
-                      postId: 'test-123'
-                    };
-                    setNotifications(prev => [testNotification, ...prev]);
-                    console.log('🧪 Test notification added');
-                  }}
-                  className="mt-2 px-3 py-1 text-xs rounded" 
-                  style={{backgroundColor: 'var(--color-primary)', color: 'white'}}
-                >
-                  Add Test Notification
-                </button>
-              </div>
-            ) : (
-              notifications.map((notification) => (
-                <div key={notification.id} className={`p-4 border-b hover:bg-opacity-50 transition-colors ${!notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`} 
-                     style={{borderColor: 'var(--color-base-300)'}}>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-2xl">{notification.avatar}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm" style={{color: 'var(--color-base-content)'}}>{notification.message}</p>
-                      <p className="text-xs mt-1" style={{color: 'var(--color-base-content)', opacity: '0.6'}}>{notification.time}</p>
-                    </div>
-                    {!notification.read && (
-                      <div className="w-2 h-2 rounded-full" style={{backgroundColor: 'var(--color-primary)'}}></div>
-                    )}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      )}
+
     </div>
   );
 };

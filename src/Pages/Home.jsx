@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Services';
-import FusionXLoader from '../Components/Common/FusionXLoader';
+import HubFusionXLoader from '../Components/Common/HubFusionXLoader';
 import {
   Navigation,
   HeroSection,
@@ -67,9 +67,9 @@ const Home = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: 'var(--color-base-100)'}}>
-        <FusionXLoader 
+        <HubFusionXLoader 
           size="lg" 
-          message="Welcome to FusionX CMS..." 
+          message="Welcome to HubFusionX CMS..." 
         />
       </div>
     );

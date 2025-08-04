@@ -10,4 +10,4 @@ Disallow: /register
 Disallow: /admin
 Disallow: /api
 
-Sitemap: https://fusionx-nine.vercel.app/sitemap.xml
+Sitemap: https://HubFusionx-nine.vercel.app/sitemap.xml

@@ -172,7 +172,7 @@ const BlogPost = () => {
               <div className="w-8 h-8 flex items-center justify-center font-bold" style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-primary-content)', borderRadius: 'var(--radius-box)' }}>
                 F
               </div>
-              <span className="text-xl font-bold" style={{ color: 'var(--color-base-content)' }}>FusionX Blog</span>
+              <span className="text-xl font-bold" style={{ color: 'var(--color-base-content)' }}>HubFusionX Blog</span>
             </Link>
             
             <nav className="hidden md:flex items-center space-x-8">

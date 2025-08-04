@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FusionXLoader } from '../Components/Common'
+import { HubFusionxLoader } from '../Components/Common'
 import api from '../Services/apiClient'
 
 const VerifyEmail = () => {
@@ -36,7 +36,7 @@ const VerifyEmail = () => {
         >
           {status === 'verifying' && (
             <div>
-              <FusionXLoader size="lg" message="Verifying your email..." />
+              <HubFusionxLoader size="lg" message="Verifying your email..." />
             </div>
           )}
 

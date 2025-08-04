@@ -294,23 +294,25 @@
   .enhanced-editor {
     padding: 1rem;
   }
-  
+
   .editor-toolbar {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .editor-toolbar > div {
     justify-content: center;
   }
 }
 
 /* Dark Mode Specific Adjustments */
-:root[data-theme="fusionx-dark"] .editor-shadow {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+:root[data-theme='HubFusionx-dark'] .editor-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 /* Light Mode Specific Adjustments */
-:root[data-theme="fusionx-light"] .editor-shadow {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+:root[data-theme='HubFusionx-light'] .editor-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }

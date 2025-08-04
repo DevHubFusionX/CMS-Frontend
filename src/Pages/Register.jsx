@@ -5,7 +5,7 @@ import { RegisterForm } from '../Components/Auth'
 import { authService } from '../Services'
 import { useAuth } from '../Services/AuthContext'
 import { useNotification } from '../Context/NotificationContext'
-import { FusionXLoader } from '../Components/Common'
+import { HubFusionXLoader } from '../Components/Common'
 import ThemeToggle from '../Components/UI/ThemeToggle'
 
 const Register = () => {
@@ -103,7 +103,7 @@ const Register = () => {
                 ))}
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2" style={{color: 'var(--color-base-content)'}}>Join FusionX</h1>
+            <h1 className="text-3xl font-bold mb-2" style={{color: 'var(--color-base-content)'}}>Join HubFusionX</h1>
             <p style={{color: 'var(--color-base-content)', opacity: '0.7'}}>Create your account and start building</p>
           </motion.div>
 
@@ -131,7 +131,7 @@ const Register = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <FusionXLoader size="lg" message="Creating your account..." />
+              <HubFusionXLoader size="lg" message="Creating your account..." />
             </motion.div>
           ) : (
             <motion.div
@@ -157,7 +157,7 @@ const Register = () => {
             Start Your Journey
           </h2>
           <p className="text-lg mb-8 leading-relaxed" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
-            Join thousands of creators building amazing content with FusionX CMS
+            Join thousands of creators building amazing content with HubFusionX CMS
           </p>
           
           <div className="space-y-4">

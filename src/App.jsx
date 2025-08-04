@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import FusionXLoader from "./Components/Common/FusionXLoader";
+import HubFusionXLoader from "./Components/Common/HubFusionXLoader";
 import PreloadCritical from "./Components/Common/PreloadCritical";
 
 // Lazy load heavy components
@@ -60,7 +60,7 @@ const App = () => {
             <AuthProvider>
               <SocketProvider>
                 <BrowserRouter>
-                  <Suspense fallback={<FusionXLoader />}>
+                  <Suspense fallback={<HubFusionXLoader />}>
                     <Routes>
                     {/* Visitor routes */}
                     <Route path="/" element={

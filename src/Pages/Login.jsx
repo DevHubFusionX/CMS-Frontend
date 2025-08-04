@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { LoginForm } from '../Components/Auth'
 import { authService, useAuth } from '../Services'
-import { FusionXLoader } from '../Components/Common'
+import { HubFusionXLoader } from '../Components/Common'
 import ThemeToggle from '../Components/UI/ThemeToggle'
 
 const Login = () => {
@@ -184,7 +184,7 @@ const Login = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <FusionXLoader size="lg" message="Signing you in..." />
+              <HubFusionXLoader size="lg" message="Signing you in..." />
             </motion.div>
           ) : (
             <motion.div

@@ -35,18 +35,7 @@ const PreviewContent = ({ post }) => {
         )}
       </header>
       
-      <div className="prose prose-xl max-w-none leading-relaxed" style={{
-        color: 'var(--color-base-content)',
-        '--tw-prose-headings': 'var(--color-base-content)',
-        '--tw-prose-body': 'var(--color-base-content)',
-        '--tw-prose-links': 'var(--color-primary)',
-        '--tw-prose-code': 'var(--color-base-content)',
-        '--tw-prose-pre-code': 'var(--color-base-content)',
-        '--tw-prose-pre-bg': 'var(--color-base-200)',
-        '--tw-prose-quotes': 'var(--color-base-content)',
-        '--tw-prose-quote-borders': 'var(--color-accent)',
-        lineHeight: '1.8'
-      }}>
+      <div className="prose max-w-none">
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
     </article>

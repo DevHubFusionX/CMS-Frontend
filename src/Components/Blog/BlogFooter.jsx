@@ -10,7 +10,7 @@ const BlogFooter = () => {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
                 F
               </div>
-              <span className="text-xl font-bold" style={{color: 'var(--color-base-content)'}}>FusionX</span>
+              <span className="text-xl font-bold" style={{color: 'var(--color-base-content)'}}>HubFusionx</span>
             </div>
             <p className="mb-6 max-w-md" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
               The next-generation content management platform built for modern teams.
@@ -71,7 +71,7 @@ const BlogFooter = () => {
         
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center" style={{borderColor: 'var(--color-base-300)'}}>
           <p style={{color: 'var(--color-base-content)', opacity: '0.6'}}>
-            © 2024 FusionX. All rights reserved.
+            © 2024 HubFusionx. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="transition-colors" style={{color: 'var(--color-base-content)', opacity: '0.6'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.6';}}>

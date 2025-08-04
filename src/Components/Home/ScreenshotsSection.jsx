@@ -6,7 +6,7 @@ const ScreenshotsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-            See FusionX in Action
+            See HubFusionx in Action
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-400 mx-auto">
             Explore our intuitive interface and powerful features
@@ -20,7 +20,7 @@ const ScreenshotsSection = () => {
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <div className="mx-auto text-gray-400 text-sm">FusionX Dashboard</div>
+            <div className="mx-auto text-gray-400 text-sm">HubFusionx Dashboard</div>
           </div>
           
           <div className="bg-gray-800 p-6">
@@ -80,7 +80,7 @@ const ScreenshotsSection = () => {
         </div>
         
         <div className="mt-8 text-center">
-          <p className="text-gray-400">Experience the full power of FusionX with a live demo</p>
+          <p className="text-gray-400">Experience the full power of HubFusionx with a live demo</p>
         </div>
       </div>
     </div>

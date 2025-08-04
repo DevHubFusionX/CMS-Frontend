@@ -1,4 +1,4 @@
-/* ===== FUSIONX THEMES ===== */
+/* ===== HubFusionX THEMES ===== */
 
 /* Smooth theme transitions */
 :root {
@@ -6,94 +6,94 @@
 }
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
-/* FusionX Light Theme */
-:root[data-theme="fusionx-light"] {
---color-base-100: oklch(98% 0.003 270); /* soft paper white */
---color-base-200: oklch(95% 0.004 270); /* card bg */
---color-base-300: oklch(91% 0.004 270); /* input bg */
---color-base-content: oklch(20% 0.005 270); /* deep neutral text */
+/* HubFusionX Light Theme */
+:root[data-theme='HubFusionx-light'] {
+  --color-base-100: oklch(98% 0.003 270); /* soft paper white */
+  --color-base-200: oklch(95% 0.004 270); /* card bg */
+  --color-base-300: oklch(91% 0.004 270); /* input bg */
+  --color-base-content: oklch(20% 0.005 270); /* deep neutral text */
 
---color-primary: oklch(40% 0.08 280); /* muted steel indigo */
---color-primary-content: oklch(97% 0.01 270);
+  --color-primary: oklch(40% 0.08 280); /* muted steel indigo */
+  --color-primary-content: oklch(97% 0.01 270);
 
---color-secondary: oklch(60% 0.06 240); /* soft slate blue */
---color-secondary-content: oklch(98% 0.01 260);
+  --color-secondary: oklch(60% 0.06 240); /* soft slate blue */
+  --color-secondary-content: oklch(98% 0.01 260);
 
---color-accent: oklch(70% 0.09 180); /* elegant teal */
---color-accent-content: oklch(15% 0.01 180);
+  --color-accent: oklch(70% 0.09 180); /* elegant teal */
+  --color-accent-content: oklch(15% 0.01 180);
 
---color-neutral: oklch(14% 0.004 260); /* charcoal gray */
---color-neutral-content: oklch(94% 0.01 260);
+  --color-neutral: oklch(14% 0.004 260); /* charcoal gray */
+  --color-neutral-content: oklch(94% 0.01 260);
 
---color-info: oklch(80% 0.1 250);
---color-info-content: oklch(25% 0.05 250);
+  --color-info: oklch(80% 0.1 250);
+  --color-info-content: oklch(25% 0.05 250);
 
---color-success: oklch(75% 0.15 150);
---color-success-content: oklch(30% 0.07 150);
+  --color-success: oklch(75% 0.15 150);
+  --color-success-content: oklch(30% 0.07 150);
 
---color-warning: oklch(85% 0.12 80);
---color-warning-content: oklch(38% 0.08 70);
+  --color-warning: oklch(85% 0.12 80);
+  --color-warning-content: oklch(38% 0.08 70);
 
---color-error: oklch(70% 0.14 15);
---color-error-content: oklch(25% 0.07 15);
+  --color-error: oklch(70% 0.14 15);
+  --color-error-content: oklch(25% 0.07 15);
 
---radius-selector: 0.375rem;
---radius-field: 0.375rem;
---radius-box: 0.5rem;
---size-selector: 0.25rem;
---size-field: 0.25rem;
---border: 1px;
---depth: 1;
---noise: 0;
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
 }
 
-/* FusionX Dark Theme */
-:root[data-theme="fusionx-dark"] {
+/* HubFusionX Dark Theme */
+:root[data-theme='HubFusionx-dark'] {
   --color-base-100: oklch(12% 0.005 260); /* charcoal background */
---color-base-200: oklch(17% 0.008 260); /* card */
---color-base-300: oklch(22% 0.01 260); /* inputs */
---color-base-content: oklch(94% 0.01 260); /* primary text on dark */
+  --color-base-200: oklch(17% 0.008 260); /* card */
+  --color-base-300: oklch(22% 0.01 260); /* inputs */
+  --color-base-content: oklch(94% 0.01 260); /* primary text on dark */
 
---color-primary: oklch(65% 0.12 280); /* brighter steel indigo */
---color-primary-content: oklch(12% 0.01 280);
+  --color-primary: oklch(65% 0.12 280); /* brighter steel indigo */
+  --color-primary-content: oklch(12% 0.01 280);
 
---color-secondary: oklch(70% 0.08 240); /* elegant slate blue */
---color-secondary-content: oklch(10% 0.01 240);
+  --color-secondary: oklch(70% 0.08 240); /* elegant slate blue */
+  --color-secondary-content: oklch(10% 0.01 240);
 
---color-accent: oklch(72% 0.1 180); /* calm cyan/teal */
---color-accent-content: oklch(12% 0.01 180);
+  --color-accent: oklch(72% 0.1 180); /* calm cyan/teal */
+  --color-accent-content: oklch(12% 0.01 180);
 
---color-neutral: oklch(8% 0.003 260); /* near-black UI elements */
---color-neutral-content: oklch(85% 0.01 270);
+  --color-neutral: oklch(8% 0.003 260); /* near-black UI elements */
+  --color-neutral-content: oklch(85% 0.01 270);
 
---color-info: oklch(75% 0.1 250);
---color-info-content: oklch(20% 0.05 250);
+  --color-info: oklch(75% 0.1 250);
+  --color-info-content: oklch(20% 0.05 250);
 
---color-success: oklch(70% 0.15 150);
---color-success-content: oklch(22% 0.06 150);
+  --color-success: oklch(70% 0.15 150);
+  --color-success-content: oklch(22% 0.06 150);
 
---color-warning: oklch(78% 0.12 80);
---color-warning-content: oklch(30% 0.08 70);
+  --color-warning: oklch(78% 0.12 80);
+  --color-warning-content: oklch(30% 0.08 70);
 
---color-error: oklch(68% 0.13 15);
---color-error-content: oklch(18% 0.07 15);
+  --color-error: oklch(68% 0.13 15);
+  --color-error-content: oklch(18% 0.07 15);
 
---radius-selector: 0.375rem;
---radius-field: 0.375rem;
---radius-box: 0.5rem;
---size-selector: 0.25rem;
---size-field: 0.25rem;
---border: 1px;
---depth: 2;
---noise: 0.02;
-
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 2;
+  --noise: 0.02;
 }
 
 /* Literary Theme - Inspired by classic books and manuscripts */
-:root[data-theme="literary"] {
+:root[data-theme='literary'] {
   --color-base-100: oklch(97% 0.01 45); /* warm cream paper */
   --color-base-200: oklch(94% 0.015 40); /* aged parchment */
   --color-base-300: oklch(90% 0.02 35); /* vintage paper */
@@ -136,6 +136,11 @@
 /* Prose Styles for Blog Content */
 .prose {
   max-width: none;
+  color: var(--color-base-content);
+}
+
+.prose * {
+  color: var(--color-base-content);
 }
 
 .prose h1 {
@@ -181,7 +186,8 @@
   color: var(--color-base-content);
 }
 
-.prose ul, .prose ol {
+.prose ul,
+.prose ol {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-left: 1.5rem;
@@ -277,7 +283,8 @@
   overflow: hidden;
 }
 
-.prose th, .prose td {
+.prose th,
+.prose td {
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--color-base-300);

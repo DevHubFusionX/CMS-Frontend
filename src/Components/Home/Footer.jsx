@@ -69,7 +69,7 @@ const Footer = () => {
         
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center" style={{borderColor: 'var(--color-base-300)'}}>
           <p style={{color: 'var(--color-base-content)', opacity: '0.6'}}>
-            © 2024 FusionX. All rights reserved.
+            © 2024 HubFusionx. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="transition-colors duration-300" style={{color: 'var(--color-base-content)', opacity: '0.6'}} onMouseEnter={(e) => {e.target.style.color = 'var(--color-primary)'; e.target.style.opacity = '1';}} onMouseLeave={(e) => {e.target.style.color = 'var(--color-base-content)'; e.target.style.opacity = '0.6';}}>

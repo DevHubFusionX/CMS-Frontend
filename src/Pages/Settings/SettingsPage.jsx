@@ -21,7 +21,7 @@ const SettingsPage = () => {
   });
   
   const [brandingData, setBrandingData] = useState({
-    cmsName: 'FusionX',
+    cmsName: 'HubFusionx',
     logo: null,
     primaryColor: '#3B82F6'
   });

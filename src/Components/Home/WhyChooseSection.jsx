@@ -80,7 +80,7 @@ const WhyChooseSection = () => {
         <div className="lg:text-center mb-16">
           <h2 className="text-base text-blue-400 font-semibold tracking-wide uppercase">Benefits</h2>
           <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
-            Why Choose FusionX
+            Why Choose HubFusionx
           </p>
           <p className="mt-4 max-w-2xl text-xl text-gray-400 lg:mx-auto">
             A modern CMS built for developers and content creators alike

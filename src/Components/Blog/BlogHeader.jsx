@@ -14,7 +14,7 @@ const BlogHeader = () => {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold" style={{background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)', color: 'var(--color-primary-content)'}}>
               F
             </div>
-            <span className="text-xl font-bold" style={{color: 'var(--color-base-content)'}}>FusionX Blog</span>
+            <span className="text-xl font-bold" style={{color: 'var(--color-base-content)'}}>HubFusionx Blog</span>
           </Link>
           
           <nav className="hidden md:flex items-center space-x-8">

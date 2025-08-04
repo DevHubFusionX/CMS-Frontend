@@ -223,7 +223,7 @@ function LoginForm({ onLogin }) {
 
       <div className="text-center mt-8">
         <p style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
-          New to FusionX?{" "}
+          New to HubFusionx?{" "}
           <Link to="/register" className="font-semibold transition-colors" style={{color: 'var(--color-primary)'}} onMouseEnter={(e) => e.target.style.opacity = '0.8'} onMouseLeave={(e) => e.target.style.opacity = '1'}>
             Create an account →
           </Link>

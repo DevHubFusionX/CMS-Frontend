@@ -10,6 +10,7 @@ import { CategoriesPage } from './Categories';
 import { TagsPage } from './Tags';
 import { UsersPage } from './Users';
 import { CommentsPage } from './Comments';
+import Notifications from './Notifications';
 import AdminLayout from '../Layout/AdminLayout';
 import DashboardHeader from './Dashboard/components/DashboardHeader';
 import StatsCards from './Dashboard/components/StatsCards';
@@ -56,6 +57,7 @@ const Dashboard = () => {
         <Route path="categories" element={<CategoriesPage />} />
         <Route path="tags" element={<TagsPage />} />
         <Route path="comments" element={<CommentsPage />} />
+        <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<SettingsPage />} />
 
       </Routes>

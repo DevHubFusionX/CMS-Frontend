@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const FusionXLoader = ({ size = 'md', className = '', message = 'Authenticating your credentials...' }) => {
+const HubFusionxLoader = ({ size = 'md', className = '', message = 'Authenticating your credentials...' }) => {
   const sizeMap = {
     sm: 80,
     md: 100,
@@ -138,4 +138,4 @@ const FusionXLoader = ({ size = 'md', className = '', message = 'Authenticating 
   );
 };
 
-export default FusionXLoader;
+export default HubFusionxLoader;

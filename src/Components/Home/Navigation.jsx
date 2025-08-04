@@ -106,7 +106,7 @@ const Navigation = ({ isScrolled, activeSection, scrollToSection }) => {
                     F
                   </div>
                   <div>
-                    <div className="text-xl font-bold" style={{ color: 'var(--color-base-content)' }}>FusionX</div>
+                    <div className="text-xl font-bold" style={{ color: 'var(--color-base-content)' }}>HubFusionx</div>
                     <div className="text-xs font-medium tracking-wider" style={{ color: 'var(--color-base-content)', opacity: '0.6' }}>CMS PLATFORM</div>
                   </div>
                 </motion.div>

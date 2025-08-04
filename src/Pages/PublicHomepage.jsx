@@ -45,7 +45,7 @@ const PublicHomepage = () => {
                 <HiBookOpen className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold" style={{ color: 'var(--color-base-content)' }}>
-                FusionX Blog
+                HubFusionX Blog
               </h1>
             </div>
             <div className="flex items-center space-x-4">

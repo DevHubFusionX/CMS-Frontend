@@ -4,7 +4,7 @@ import { AnimatedContainer } from '../Common';
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      quote: "FusionX transformed how we manage content. The AI features are incredible and saved us countless hours.",
+      quote: "HubFusionx transformed how we manage content. The AI features are incredible and saved us countless hours.",
       author: "Sarah Chen",
       role: "Content Director",
       company: "TechCorp",
@@ -35,7 +35,7 @@ const TestimonialsSection = () => {
               Loved by Teams Worldwide
             </h2>
             <p className="text-xl max-w-3xl mx-auto" style={{color: 'var(--color-base-content)', opacity: '0.7'}}>
-              See what our customers are saying about FusionX
+              See what our customers are saying about HubFusionx
             </p>
           </div>
         </AnimatedContainer>

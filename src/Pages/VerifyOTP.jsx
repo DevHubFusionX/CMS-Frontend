@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { authService } from '../Services'
 import { useNotification } from '../Context/NotificationContext'
-import { FusionXLoader } from '../Components/Common'
+import { HubFusionxLoader } from '../Components/Common'
 
 const VerifyOTP = () => {
   const [otp, setOtp] = useState('')
@@ -92,7 +92,7 @@ const VerifyOTP = () => {
                 color: 'var(--color-primary-content)'
               }}
             >
-              {loading ? <FusionXLoader size="sm" /> : 'Verify OTP'}
+              {loading ? <HubFusionxLoader size="sm" /> : 'Verify OTP'}
             </button>
           </form>
 
