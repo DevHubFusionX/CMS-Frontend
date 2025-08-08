@@ -11,6 +11,8 @@ import { TagsPage } from './Tags';
 import { UsersPage } from './Users';
 import { CommentsPage } from './Comments';
 import Notifications from './Notifications';
+import PagesList from './Pages/PagesList';
+import PageForm from './Pages/PageForm';
 import AdminLayout from '../Layout/AdminLayout';
 import DashboardHeader from './Dashboard/components/DashboardHeader';
 import StatsCards from './Dashboard/components/StatsCards';
@@ -57,6 +59,9 @@ const Dashboard = () => {
         <Route path="categories" element={<CategoriesPage />} />
         <Route path="tags" element={<TagsPage />} />
         <Route path="comments" element={<CommentsPage />} />
+        <Route path="pages" element={<PagesList />} />
+        <Route path="pages/new" element={<PageForm />} />
+        <Route path="pages/edit/:id" element={<PageForm />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<SettingsPage />} />
 

@@ -1,5 +1,6 @@
 export { default as api, authService } from './api';
 export { postsService } from './postsService';
+export { pagesService } from './pagesService';
 export { AuthProvider, useAuth } from './AuthContext';
 export { AnalyticsProvider, useAnalytics } from './AnalyticsContext';
 export { CategoriesProvider, useCategories } from './CategoriesContext';
