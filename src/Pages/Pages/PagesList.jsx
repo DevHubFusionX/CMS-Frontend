@@ -9,10 +9,11 @@ const PagesList = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { data: pagesData, isLoading } = useQuery({
+  const { data: pagesData, isLoading, error } = useQuery({
     queryKey: ['pages-admin'],
     queryFn: pagesService.getAllPagesAdmin,
-    select: (data) => data.data || []
+    select: (data) => data.data || [],
+    retry: 1
   });
 
   const deleteMutation = useMutation({
@@ -34,6 +35,23 @@ const PagesList = () => {
   };
 
   if (isLoading) return <div className="p-6">Loading...</div>;
+  
+  if (error) {
+    return (
+      <div className="p-6">
+        <div className="text-center py-8">
+          <div className="text-red-500 mb-4">Error loading pages</div>
+          <div className="text-sm opacity-70 mb-4">{error.message}</div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

@@ -20,11 +20,12 @@ const PageForm = () => {
     metaDescription: ''
   });
 
-  const { data: pageData } = useQuery({
+  const { data: pageData, error: pageError } = useQuery({
     queryKey: ['page', id],
     queryFn: () => pagesService.getPageBySlug(id),
     enabled: isEdit,
-    select: (data) => data.data
+    select: (data) => data.data,
+    retry: 1
   });
 
   useEffect(() => {
@@ -64,6 +65,23 @@ const PageForm = () => {
       createMutation.mutate(formData);
     }
   };
+  
+  if (pageError) {
+    return (
+      <div className="p-6">
+        <div className="text-center py-8">
+          <div className="text-red-500 mb-4">Error loading page</div>
+          <div className="text-sm opacity-70 mb-4">{pageError.message}</div>
+          <button 
+            onClick={() => navigate('/dashboard/pages')}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Back to Pages
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
