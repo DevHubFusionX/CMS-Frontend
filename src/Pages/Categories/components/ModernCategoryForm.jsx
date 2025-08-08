@@ -85,39 +85,61 @@ const ModernCategoryForm = ({ isOpen, onClose, initialValues = {}, onSubmit, isE
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+        className="absolute inset-0 backdrop-blur-sm transition-opacity duration-300"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
         onClick={onClose}
       />
       
-      {/* Modal */}
-      <div className="relative flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl transform transition-all duration-300">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-700 rounded-t-2xl">
+      {/* Modal Container - Responsive positioning and sizing */}
+      <div className="relative flex min-h-full items-start sm:items-center justify-center p-2 sm:p-4 lg:p-6">
+        <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl rounded-lg sm:rounded-xl lg:rounded-2xl shadow-2xl transform transition-all duration-300 my-2 sm:my-4 lg:my-8" style={{
+          backgroundColor: 'var(--color-base-100)'
+        }}>
+          {/* Header - Responsive padding and text sizes */}
+          <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b rounded-t-lg sm:rounded-t-xl lg:rounded-t-2xl transition-colors duration-300" style={{
+            backgroundColor: 'var(--color-base-200)',
+            borderColor: 'var(--color-base-300)'
+          }}>
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold transition-colors duration-300" style={{
+                background: `linear-gradient(135deg, var(--color-primary), var(--color-secondary))`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
                 {isEditing ? 'Edit Category' : 'Create New Category'}
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                className="p-1.5 sm:p-2 rounded-lg transition-all duration-200"
+                style={{ color: 'var(--color-base-content)', opacity: '0.7' }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-base-300)';
+                  e.target.style.opacity = '1';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                  e.target.style.opacity = '0.7';
+                }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Form - Responsive padding and spacing */}
+          <form onSubmit={handleSubmit} className="p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-5 lg:space-y-6">
             {/* Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Category Name <span className="text-red-500">*</span>
+              <label htmlFor="name" className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 transition-colors duration-300" style={{
+                color: 'var(--color-base-content)'
+              }}>
+                Category Name <span style={{ color: 'var(--color-error)' }}>*</span>
               </label>
               <input
                 type="text"
@@ -125,24 +147,42 @@ const ModernCategoryForm = ({ isOpen, onClose, initialValues = {}, onSubmit, isE
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ${
-                  errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                }`}
+                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:ring-2 transition-all duration-200 text-sm sm:text-base`}
+                style={{
+                  backgroundColor: 'var(--color-base-200)',
+                  borderColor: errors.name ? 'var(--color-error)' : 'var(--color-base-300)',
+                  color: 'var(--color-base-content)',
+                  '--tw-ring-color': 'var(--color-primary)'
+                }}
                 placeholder="Enter category name"
+                onFocus={(e) => {
+                  if (!errors.name) e.target.style.borderColor = 'var(--color-primary)';
+                }}
+                onBlur={(e) => {
+                  if (!errors.name) e.target.style.borderColor = 'var(--color-base-300)';
+                }}
               />
               {errors.name && (
-                <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+                <p className="mt-1 text-xs sm:text-sm" style={{ color: 'var(--color-error)' }}>{errors.name}</p>
               )}
             </div>
 
-            {/* Slug Field */}
+            {/* Slug Field - Responsive layout */}
             <div>
-              <label htmlFor="slug" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                URL Slug <span className="text-red-500">*</span>
+              <label htmlFor="slug" className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 transition-colors duration-300" style={{
+                color: 'var(--color-base-content)'
+              }}>
+                URL Slug <span style={{ color: 'var(--color-error)' }}>*</span>
               </label>
-              <div className="flex rounded-xl shadow-sm">
-                <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">
-                  /categories/
+              <div className="flex rounded-lg sm:rounded-xl shadow-sm">
+                <span className="inline-flex items-center px-2 sm:px-3 rounded-l-lg sm:rounded-l-xl border border-r-0 text-xs sm:text-sm transition-colors duration-300" style={{
+                  backgroundColor: 'var(--color-base-300)',
+                  borderColor: 'var(--color-base-300)',
+                  color: 'var(--color-base-content)',
+                  opacity: '0.7'
+                }}>
+                  <span className="hidden sm:inline">/categories/</span>
+                  <span className="sm:hidden">/cat/</span>
                 </span>
                 <input
                   type="text"
@@ -150,23 +190,39 @@ const ModernCategoryForm = ({ isOpen, onClose, initialValues = {}, onSubmit, isE
                   name="slug"
                   value={formData.slug}
                   onChange={handleChange}
-                  className={`flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-800 border rounded-r-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white transition-all duration-200 ${
-                    errors.slug ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                  }`}
+                  className={`flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border rounded-r-lg sm:rounded-r-xl focus:ring-2 transition-all duration-200 text-sm sm:text-base`}
+                  style={{
+                    backgroundColor: 'var(--color-base-200)',
+                    borderColor: errors.slug ? 'var(--color-error)' : 'var(--color-base-300)',
+                    color: 'var(--color-base-content)',
+                    '--tw-ring-color': 'var(--color-primary)'
+                  }}
                   placeholder="category-slug"
+                  onFocus={(e) => {
+                    if (!errors.slug) e.target.style.borderColor = 'var(--color-primary)';
+                  }}
+                  onBlur={(e) => {
+                    if (!errors.slug) e.target.style.borderColor = 'var(--color-base-300)';
+                  }}
                 />
               </div>
               {errors.slug && (
-                <p className="mt-1 text-sm text-red-500">{errors.slug}</p>
+                <p className="mt-1 text-xs sm:text-sm" style={{ color: 'var(--color-error)' }}>{errors.slug}</p>
               )}
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                URL-friendly name for your category (auto-generated from name)
+              <p className="mt-1 text-xs sm:text-sm transition-colors duration-300" style={{
+                color: 'var(--color-base-content)',
+                opacity: '0.7'
+              }}>
+                <span className="hidden sm:inline">URL-friendly name for your category (auto-generated from name)</span>
+                <span className="sm:hidden">Auto-generated from name</span>
               </p>
             </div>
 
-            {/* Description Field */}
+            {/* Description Field - Responsive rows */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="description" className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 transition-colors duration-300" style={{
+                color: 'var(--color-base-content)'
+              }}>
                 Description
               </label>
               <textarea
@@ -174,69 +230,124 @@ const ModernCategoryForm = ({ isOpen, onClose, initialValues = {}, onSubmit, isE
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                rows={3}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200"
-                placeholder="Brief description of this category (optional)"
+                rows={2}
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:ring-2 transition-all duration-200 text-sm sm:text-base sm:rows-3"
+                style={{
+                  backgroundColor: 'var(--color-base-200)',
+                  borderColor: 'var(--color-base-300)',
+                  color: 'var(--color-base-content)',
+                  '--tw-ring-color': 'var(--color-primary)'
+                }}
+                placeholder="Brief description (optional)"
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--color-primary)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--color-base-300)';
+                }}
               />
             </div>
 
-            {/* Color Field */}
+            {/* Color Field - Responsive layout */}
             <div>
-              <label htmlFor="color" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="color" className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2 transition-colors duration-300" style={{
+                color: 'var(--color-base-content)'
+              }}>
                 Category Color
               </label>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                 <input
                   type="color"
                   id="color"
                   name="color"
                   value={formData.color}
                   onChange={handleChange}
-                  className="w-12 h-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 cursor-pointer"
+                  className="w-16 h-10 sm:w-12 sm:h-12 rounded-lg border-2 cursor-pointer transition-colors duration-300"
+                  style={{ borderColor: 'var(--color-base-300)' }}
                 />
                 <input
                   type="text"
                   value={formData.color}
                   onChange={(e) => setFormData(prev => ({ ...prev, color: e.target.value }))}
-                  className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white"
+                  className="flex-1 w-full sm:w-auto px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:ring-2 transition-all duration-200 text-sm sm:text-base"
+                  style={{
+                    backgroundColor: 'var(--color-base-200)',
+                    borderColor: 'var(--color-base-300)',
+                    color: 'var(--color-base-content)',
+                    '--tw-ring-color': 'var(--color-primary)'
+                  }}
                   placeholder="#10B981"
+                  onFocus={(e) => {
+                    e.target.style.borderColor = 'var(--color-primary)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'var(--color-base-300)';
+                  }}
                 />
               </div>
-              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Choose a color to represent this category
+              <p className="mt-1 text-xs sm:text-sm transition-colors duration-300" style={{
+                color: 'var(--color-base-content)',
+                opacity: '0.7'
+              }}>
+                <span className="hidden sm:inline">Choose a color to represent this category</span>
+                <span className="sm:hidden">Category color</span>
               </p>
             </div>
 
-            {/* Submit Button */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            {/* Submit Buttons - Responsive layout and sizing */}
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t transition-colors duration-300" style={{
+              borderColor: 'var(--color-base-300)'
+            }}>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl font-medium transition-all duration-200"
+                className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-medium transition-all duration-200 text-sm sm:text-base order-2 sm:order-1"
+                style={{
+                  color: 'var(--color-base-content)',
+                  backgroundColor: 'var(--color-base-200)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-base-300)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--color-base-200)';
+                }}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className={`px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2 ${
+                className={`w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 font-semibold rounded-lg sm:rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base order-1 sm:order-2 ${
                   loading ? 'opacity-75 cursor-not-allowed' : ''
                 }`}
+                style={{
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'var(--color-primary-content)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) e.target.style.backgroundColor = 'var(--color-primary-focus)';
+                }}
+                onMouseLeave={(e) => {
+                  if (!loading) e.target.style.backgroundColor = 'var(--color-primary)';
+                }}
               >
                 {loading ? (
                   <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Processing...
+                    <span className="hidden sm:inline">Processing...</span>
+                    <span className="sm:hidden">...</span>
                   </>
                 ) : (
                   <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    {isEditing ? 'Update Category' : 'Create Category'}
+                    <span className="hidden sm:inline">{isEditing ? 'Update Category' : 'Create Category'}</span>
+                    <span className="sm:hidden">{isEditing ? 'Update' : 'Create'}</span>
                   </>
                 )}
               </button>

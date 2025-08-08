@@ -73,7 +73,10 @@ const CategoriesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50 dark:from-gray-900 dark:via-green-900/20 dark:to-emerald-900/20">
+    <div className="min-h-screen transition-all duration-300" style={{
+      backgroundColor: 'var(--color-base-100)',
+      background: `linear-gradient(135deg, var(--color-base-100) 0%, var(--color-base-200) 100%)`
+    }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-6 sm:space-y-8">
           <ModernCategoriesHeader 

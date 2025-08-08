@@ -124,15 +124,20 @@ const AIAssistant = ({ onContentGenerated }) => {
       const trimmed = section.trim();
       if (!trimmed) continue;
       
-      // Handle headings (lines ending with colon or standalone titles)
-      if ((trimmed.endsWith(':') || trimmed.match(/^[A-Z][^.!?]*$/)) && trimmed.length < 100 && !trimmed.includes('\n')) {
-        html += `<h2>${trimmed.replace(':', '')}</h2>`;
+      // Skip code blocks and programming examples
+      if (trimmed.includes('def ') || trimmed.includes('function ') || 
+          trimmed.includes('class ') || trimmed.includes('import ') ||
+          trimmed.includes('print(') || trimmed.includes('console.log') ||
+          trimmed.includes('return ') || trimmed.includes('// ') ||
+          trimmed.includes('# ') || trimmed.includes('```') ||
+          /^\s*[a-zA-Z_][a-zA-Z0-9_]*\s*=/.test(trimmed) ||
+          trimmed.includes('Example of') && (trimmed.includes('script') || trimmed.includes('code'))) {
         continue;
       }
       
-      // Handle code blocks
-      if (trimmed.includes('class ') || trimmed.includes('def ') || trimmed.includes('function ') || trimmed.startsWith('#') && trimmed.includes('code')) {
-        html += `<pre><code>${trimmed}</code></pre>`;
+      // Handle headings (lines ending with colon or standalone titles)
+      if ((trimmed.endsWith(':') || trimmed.match(/^[A-Z][^.!?]*$/)) && trimmed.length < 100 && !trimmed.includes('\n')) {
+        html += `<h2>${trimmed.replace(':', '')}</h2>`;
         continue;
       }
       

@@ -37,7 +37,7 @@ export const useSidebar = () => {
   const handleMouseEnter = () => {
     if (!isMobile) {
       if (hoverTimeout) clearTimeout(hoverTimeout);
-      const timeout = setTimeout(() => setCollapsed(false), 200);
+      const timeout = setTimeout(() => setCollapsed(false), 150);
       setHoverTimeout(timeout);
     }
   };
@@ -45,7 +45,7 @@ export const useSidebar = () => {
   const handleMouseLeave = () => {
     if (!isMobile) {
       if (hoverTimeout) clearTimeout(hoverTimeout);
-      const timeout = setTimeout(() => setCollapsed(true), 300);
+      const timeout = setTimeout(() => setCollapsed(true), 500);
       setHoverTimeout(timeout);
     }
   };
