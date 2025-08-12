@@ -1,67 +1,78 @@
 import React from 'react';
+import { FiFolder, FiFileText, FiTrendingUp, FiStar } from 'react-icons/fi';
 
 const CategoriesStats = ({ stats }) => {
-  const statItems = [
+  const statCards = [
     {
-      label: 'Total Categories',
+      title: 'Total Categories',
       value: stats.total,
-      icon: '📁',
-      color: 'var(--color-primary)'
+      icon: FiFolder,
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'from-blue-50 to-blue-100',
+      change: '+12%',
+      changeType: 'positive'
     },
     {
-      label: 'Active Categories',
+      title: 'Active Categories',
       value: stats.active,
-      icon: '✅',
-      color: 'var(--color-success)'
+      icon: FiTrendingUp,
+      color: 'from-green-500 to-green-600',
+      bgColor: 'from-green-50 to-green-100',
+      change: '+8%',
+      changeType: 'positive'
     },
     {
-      label: 'Posts Categorized',
+      title: 'Total Posts',
       value: stats.postsCount,
-      icon: '📄',
-      color: 'var(--color-secondary)'
+      icon: FiFileText,
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'from-purple-50 to-purple-100',
+      change: '+23%',
+      changeType: 'positive'
     },
     {
-      label: 'Most Popular',
-      value: stats.mostPopular || 'N/A',
-      icon: '🔥',
-      color: 'var(--color-accent)',
+      title: 'Most Popular',
+      value: stats.mostPopular,
+      icon: FiStar,
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'from-orange-50 to-orange-100',
       isText: true
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-      {statItems.map((item, index) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {statCards.map((stat, index) => (
         <div
           key={index}
-          className="backdrop-blur-sm rounded-2xl p-4 sm:p-6 border hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-          style={{
-            backgroundColor: 'var(--color-base-100)',
-            borderColor: 'var(--color-base-300)',
-            border: 'var(--border) solid var(--color-base-300)'
-          }}
+          className={`relative overflow-hidden bg-gradient-to-br ${stat.bgColor} rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1`}
         >
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-xs sm:text-sm font-medium uppercase tracking-wide transition-colors duration-300" style={{
-                color: 'var(--color-base-content)',
-                opacity: '0.7'
-              }}>
-                {item.label}
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold transition-colors duration-300" style={{
-                color: 'var(--color-base-content)'
-              }}>
-                {item.isText ? item.value : item.value.toLocaleString()}
-              </p>
-            </div>
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl shadow-lg" style={{
-              backgroundColor: item.color,
-              color: 'white'
-            }}>
-              {item.icon}
+          <div className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-600 mb-1">
+                  {stat.title}
+                </p>
+                <p className={`text-2xl font-bold ${stat.isText ? 'text-lg' : ''} text-gray-900 truncate`}>
+                  {stat.value}
+                </p>
+                {stat.change && (
+                  <div className="flex items-center mt-2">
+                    <span className={`text-xs font-medium ${
+                      stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {stat.change}
+                    </span>
+                    <span className="text-xs text-gray-500 ml-1">vs last month</span>
+                  </div>
+                )}
+              </div>
+              <div className={`p-3 bg-gradient-to-br ${stat.color} rounded-lg shadow-lg`}>
+                <stat.icon className="h-6 w-6 text-white" />
+              </div>
             </div>
           </div>
+          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color}`}></div>
         </div>
       ))}
     </div>

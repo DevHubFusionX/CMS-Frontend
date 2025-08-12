@@ -1,9 +1,11 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import MediaField from '../../Media/MediaField';
 import ContentEditor from '../../Editor/components/ContentEditor';
+import CategoriesField from '../../Editor/components/CategoriesField';
 import AIAssistant from '../../Editor/AIAssistant';
 import { EDITOR_LANGUAGES } from '../../../Constants/editorConfig';
 import { useAuth } from '../../../Services/AuthContext';
+import { categoriesService } from '../../../Services/api';
 
 const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, submitButtonText = 'Save', isEditing = false }, ref) => {
   const { user } = useAuth();
@@ -16,6 +18,7 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
     status: userRole === 'contributor' ? 'draft' : (initialData.status || 'draft'),
     featuredImage: initialData.featuredImage || null,
     galleryImages: initialData.galleryImages || [],
+    categories: initialData.categories || [],
     tags: initialData.tags || [],
     focusKeyword: initialData.focusKeyword || '',
     scheduledDate: initialData.scheduledDate || null,
@@ -27,6 +30,19 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
   const [errors, setErrors] = useState({});
   const [tagInput, setTagInput] = useState('');
   const [showAdvancedSeo, setShowAdvancedSeo] = useState(false);
+  const [categories, setCategories] = useState([]);
+  
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await categoriesService.getAllCategories();
+        setCategories(response.data || []);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
   
   useImperativeHandle(ref, () => ({
     getCurrentFormData: (callback) => {
@@ -103,6 +119,14 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
     setFormData(prevData => ({
       ...prevData,
       tags: prevData.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+  
+  const handleCategoryChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData(prevData => ({
+      ...prevData,
+      categories: selectedOptions
     }));
   };
   
@@ -487,6 +511,19 @@ const ModernEnhancedForm = forwardRef(({ initialData = {}, onSubmit, loading, su
                 </div>
               )}
             </div>
+          </div>
+          
+          {/* Categories */}
+          <div className="rounded-xl p-4 border" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)'}}>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{color: 'var(--color-base-content)'}}>
+              <span>📁</span>
+              Categories
+            </h3>
+            <CategoriesField 
+              value={formData.categories}
+              onChange={handleCategoryChange}
+              categories={categories}
+            />
           </div>
           
           {/* Tags */}

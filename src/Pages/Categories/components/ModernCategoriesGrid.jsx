@@ -1,270 +1,213 @@
 import React from 'react';
-import { formatDate } from '../../../Utils/formatters';
+import { FiEdit3, FiTrash2, FiFileText, FiTag, FiMoreVertical } from 'react-icons/fi';
 
-const ModernCategoriesGrid = ({ loading, categories, onEdit, onDelete, viewMode = 'grid' }) => {
+const CategoryCard = ({ category, onEdit, onDelete }) => {
+  const getColorClasses = (color) => {
+    const colorMap = {
+      blue: 'from-blue-500 to-blue-600 bg-blue-50 text-blue-700',
+      green: 'from-green-500 to-green-600 bg-green-50 text-green-700',
+      purple: 'from-purple-500 to-purple-600 bg-purple-50 text-purple-700',
+      red: 'from-red-500 to-red-600 bg-red-50 text-red-700',
+      orange: 'from-orange-500 to-orange-600 bg-orange-50 text-orange-700',
+      indigo: 'from-indigo-500 to-indigo-600 bg-indigo-50 text-indigo-700'
+    };
+    return colorMap[color] || colorMap.blue;
+  };
+
+  const colorClasses = getColorClasses(category.color);
+  const [gradientClasses, bgClasses, textClasses] = colorClasses.split(' bg-');
+  const [bgClass, textClass] = bgClasses.split(' text-');
+
+  return (
+    <div className="group relative bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+      {/* Color accent bar */}
+      <div className={`h-1 bg-gradient-to-r ${gradientClasses}`}></div>
+      
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className={`p-3 bg-${bgClass} rounded-lg`}>
+            <FiTag className={`h-6 w-6 ${textClass}`} />
+          </div>
+          
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="flex items-center space-x-1">
+              <button
+                onClick={() => onEdit(category)}
+                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+                title="Edit category"
+              >
+                <FiEdit3 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => onDelete(category._id || category.id)}
+                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                title="Delete category"
+              >
+                <FiTrash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-3">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+              {category.name}
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">/{category.slug}</p>
+          </div>
+
+          {category.description && (
+            <p className="text-gray-600 text-sm line-clamp-2">
+              {category.description}
+            </p>
+          )}
+
+          {/* Stats */}
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+            <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <FiFileText className="h-4 w-4" />
+              <span>{category.postCount || 0} posts</span>
+            </div>
+            
+            <div className={`px-2 py-1 bg-${bgClass} ${textClass} text-xs font-medium rounded-full`}>
+              {category.status || 'active'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CategoryListItem = ({ category, onEdit, onDelete }) => {
+  const getColorClasses = (color) => {
+    const colorMap = {
+      blue: 'bg-blue-100 text-blue-700',
+      green: 'bg-green-100 text-green-700',
+      purple: 'bg-purple-100 text-purple-700',
+      red: 'bg-red-100 text-red-700',
+      orange: 'bg-orange-100 text-orange-700',
+      indigo: 'bg-indigo-100 text-indigo-700'
+    };
+    return colorMap[color] || colorMap.blue;
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200">
+      <div className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4 flex-1">
+            <div className={`p-2 ${getColorClasses(category.color)} rounded-lg`}>
+              <FiTag className="h-5 w-5" />
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center space-x-3">
+                <h3 className="text-lg font-semibold text-gray-900 truncate">
+                  {category.name}
+                </h3>
+                <span className="text-sm text-gray-500">/{category.slug}</span>
+              </div>
+              {category.description && (
+                <p className="text-gray-600 text-sm mt-1 line-clamp-1">
+                  {category.description}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <FiFileText className="h-4 w-4" />
+              <span>{category.postCount || 0} posts</span>
+            </div>
+            
+            <div className={`px-3 py-1 ${getColorClasses(category.color)} text-xs font-medium rounded-full`}>
+              {category.status || 'active'}
+            </div>
+
+            <div className="flex items-center space-x-1">
+              <button
+                onClick={() => onEdit(category)}
+                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200"
+              >
+                <FiEdit3 className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => onDelete(category._id || category.id)}
+                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+              >
+                <FiTrash2 className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ModernCategoriesGrid = ({ loading, categories, onEdit, onDelete, viewMode }) => {
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 space-y-4">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 rounded-full animate-spin" style={{
-            borderColor: 'var(--color-base-300)'
-          }}></div>
-          <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent rounded-full animate-spin" style={{
-            borderTopColor: 'var(--color-primary)'
-          }}></div>
-        </div>
-        <p className="font-medium transition-colors duration-300" style={{
-          color: 'var(--color-base-content)',
-          opacity: '0.7'
-        }}>Loading categories...</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+              <div className="flex space-x-2">
+                <div className="w-8 h-8 bg-gray-200 rounded-lg"></div>
+                <div className="w-8 h-8 bg-gray-200 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="space-y-3">
+              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
   if (categories.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="mx-auto w-24 h-24 rounded-2xl flex items-center justify-center mb-6" style={{
-          backgroundColor: 'var(--color-base-200)'
-        }}>
-          <svg className="w-12 h-12 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{
-            color: 'var(--color-base-content)',
-            opacity: '0.5'
-          }}>
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-semibold mb-2 transition-colors duration-300" style={{
-          color: 'var(--color-base-content)'
-        }}>No categories found</h3>
-        <p className="mb-6 transition-colors duration-300" style={{
-          color: 'var(--color-base-content)',
-          opacity: '0.7'
-        }}>Create your first category to organize your content</p>
+      <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
+        <FiTag className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No categories found</h3>
+        <p className="text-gray-500">Create your first category to get started organizing your content.</p>
       </div>
     );
   }
 
-  if (viewMode === 'table') {
+  if (viewMode === 'list') {
     return (
-      <div className="backdrop-blur-sm rounded-2xl border shadow-lg overflow-hidden transition-all duration-300" style={{
-        backgroundColor: 'var(--color-base-100)',
-        borderColor: 'var(--color-base-300)'
-      }}>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead style={{ backgroundColor: 'var(--color-base-200)' }}>
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.7'
-                }}>Category</th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.7'
-                }}>Slug</th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.7'
-                }}>Description</th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.7'
-                }}>Created</th>
-                <th className="px-6 py-4 text-right text-xs font-medium uppercase tracking-wider transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.7'
-                }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y" style={{ borderColor: 'var(--color-base-300)' }}>
-              {categories.map((category, index) => (
-                <tr key={category.id || category._id || index} className="hover:bg-opacity-50 transition-colors duration-200" 
-                    onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--color-base-200)'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div 
-                        className="w-4 h-4 rounded-full mr-3 shadow-sm"
-                        style={{ backgroundColor: category.color || 'var(--color-primary)' }}
-                      />
-                      <div className="text-sm font-medium transition-colors duration-300" style={{
-                        color: 'var(--color-base-content)'
-                      }}>
-                        {category.name}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm transition-colors duration-300" style={{
-                    color: 'var(--color-base-content)',
-                    opacity: '0.7'
-                  }}>
-                    {category.slug}
-                  </td>
-                  <td className="px-6 py-4 text-sm max-w-xs truncate transition-colors duration-300" style={{
-                    color: 'var(--color-base-content)',
-                    opacity: '0.7'
-                  }}>
-                    {category.description || '-'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm transition-colors duration-300" style={{
-                    color: 'var(--color-base-content)',
-                    opacity: '0.7'
-                  }}>
-                    {formatDate(category.createdAt, { year: 'numeric', month: 'short', day: 'numeric' })}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end space-x-2">
-                      <button 
-                        onClick={() => onEdit(category)}
-                        className="p-2 rounded-lg transition-all duration-200"
-                        style={{ color: 'var(--color-base-content)', opacity: '0.5' }}
-                        onMouseEnter={(e) => {
-                          e.target.style.color = 'var(--color-primary)';
-                          e.target.style.backgroundColor = 'var(--color-primary-50, var(--color-base-200))';
-                          e.target.style.opacity = '1';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.color = 'var(--color-base-content)';
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.opacity = '0.5';
-                        }}
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                      </button>
-                      <button 
-                        onClick={() => onDelete(category.id || category._id)}
-                        className="p-2 rounded-lg transition-all duration-200"
-                        style={{ color: 'var(--color-base-content)', opacity: '0.5' }}
-                        onMouseEnter={(e) => {
-                          e.target.style.color = 'var(--color-error)';
-                          e.target.style.backgroundColor = 'var(--color-error-50, var(--color-base-200))';
-                          e.target.style.opacity = '1';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.color = 'var(--color-base-content)';
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.opacity = '0.5';
-                        }}
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="space-y-4">
+        {categories.map((category) => (
+          <CategoryListItem
+            key={category._id || category.id}
+            category={category}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-      {categories.map((category, index) => (
-        <div
-          key={category.id || category._id || index}
-          className="group backdrop-blur-sm rounded-2xl border shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-          style={{
-            backgroundColor: 'var(--color-base-100)',
-            borderColor: 'var(--color-base-300)'
-          }}
-        >
-          {/* Color Header */}
-          <div 
-            className="h-2"
-            style={{ backgroundColor: category.color || 'var(--color-primary)' }}
-          />
-          
-          <div className="p-4 sm:p-6">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div 
-                  className="w-3 h-3 rounded-full shadow-sm"
-                  style={{ backgroundColor: category.color || 'var(--color-primary)' }}
-                />
-                <h3 className="font-semibold text-lg truncate transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)'
-                }}>
-                  {category.name}
-                </h3>
-              </div>
-              
-              <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <button 
-                  onClick={() => onEdit(category)}
-                  className="p-1.5 rounded-lg transition-all duration-200"
-                  style={{ color: 'var(--color-base-content)', opacity: '0.5' }}
-                  onMouseEnter={(e) => {
-                    e.target.style.color = 'var(--color-primary)';
-                    e.target.style.backgroundColor = 'var(--color-primary-50, var(--color-base-200))';
-                    e.target.style.opacity = '1';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.color = 'var(--color-base-content)';
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.opacity = '0.5';
-                  }}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </button>
-                <button 
-                  onClick={() => onDelete(category.id || category._id)}
-                  className="p-1.5 rounded-lg transition-all duration-200"
-                  style={{ color: 'var(--color-base-content)', opacity: '0.5' }}
-                  onMouseEnter={(e) => {
-                    e.target.style.color = 'var(--color-error)';
-                    e.target.style.backgroundColor = 'var(--color-error-50, var(--color-base-200))';
-                    e.target.style.opacity = '1';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.color = 'var(--color-base-content)';
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.opacity = '0.5';
-                  }}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <p className="text-sm font-mono transition-colors duration-300" style={{
-                color: 'var(--color-base-content)',
-                opacity: '0.7'
-              }}>
-                /{category.slug}
-              </p>
-              
-              {category.description && (
-                <p className="text-sm line-clamp-2 transition-colors duration-300" style={{
-                  color: 'var(--color-base-content)',
-                  opacity: '0.8'
-                }}>
-                  {category.description}
-                </p>
-              )}
-              
-              <div className="flex items-center justify-between text-xs pt-2 border-t transition-colors duration-300" style={{
-                color: 'var(--color-base-content)',
-                opacity: '0.6',
-                borderColor: 'var(--color-base-300)'
-              }}>
-                <span>Created</span>
-                <span>{formatDate(category.createdAt, { month: 'short', day: 'numeric' })}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {categories.map((category) => (
+        <CategoryCard
+          key={category._id || category.id}
+          category={category}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );

@@ -1,7 +1,21 @@
 import React from 'react';
+import { useCategories } from '../../Services/CategoriesContext';
 
 const CategoryFilter = ({ selectedCategory, setSelectedCategory, refreshPosts }) => {
-  const categories = ['all', 'technology', 'design', 'business', 'tutorials'];
+  const { categories: cmsCategories, loading } = useCategories();
+  const categories = ['all', ...(cmsCategories || []).filter(cat => cat.status === 'active').map(cat => cat.slug)];
+  
+  console.log('CategoryFilter:', { cmsCategories, categories, loading });
+
+  if (loading) {
+    return (
+      <div className="mb-12">
+        <div className="flex flex-wrap gap-3 justify-center">
+          <div className="px-6 py-3 rounded-full bg-gray-200 animate-pulse">Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-12">
@@ -41,7 +55,7 @@ const CategoryFilter = ({ selectedCategory, setSelectedCategory, refreshPosts })
               }
             }}
           >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {category === 'all' ? 'All' : (cmsCategories || []).find(cat => cat.slug === category)?.name || category.charAt(0).toUpperCase() + category.slice(1)}
           </button>
         ))}
       </div>

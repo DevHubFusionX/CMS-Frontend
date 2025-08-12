@@ -27,7 +27,24 @@ const Blog = () => {
     queryFn: () => postsService.getAllPosts(),
     select: (data) => {
       console.log('Posts API response:', data);
-      return data.data || [];
+      let posts = data.data || [];
+      
+      // Filter by category
+      if (selectedCategory !== 'all') {
+        posts = posts.filter(post => 
+          post.categories?.some(cat => cat.slug === selectedCategory)
+        );
+      }
+      
+      // Filter by search term
+      if (searchTerm) {
+        posts = posts.filter(post =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.content.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+      
+      return posts;
     }
   });
 

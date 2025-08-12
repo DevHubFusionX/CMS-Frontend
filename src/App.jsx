@@ -71,7 +71,9 @@ const App = () => {
                     } />
                     <Route path="/blog" element={
                       <RoleBasedRoute allowedRoles={['visitor', 'subscriber', 'contributor', 'author', 'editor', 'admin', 'super_admin']}>
-                        <Blog />
+                        <CategoriesProvider>
+                          <Blog />
+                        </CategoriesProvider>
                       </RoleBasedRoute>
                     } />
                     <Route path="/blog/:slug" element={

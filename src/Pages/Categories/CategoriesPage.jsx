@@ -13,7 +13,6 @@ const CategoriesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState('grid');
 
-  // Filter categories based on search term
   const filteredCategories = useMemo(() => {
     return categories.filter(category =>
       category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -22,7 +21,6 @@ const CategoriesPage = () => {
     );
   }, [categories, searchTerm]);
 
-  // Calculate stats
   const categoriesStats = {
     total: categories.length,
     active: categories.filter(cat => cat.status !== 'inactive').length,
@@ -73,10 +71,7 @@ const CategoriesPage = () => {
   };
 
   return (
-    <div className="min-h-screen transition-all duration-300" style={{
-      backgroundColor: 'var(--color-base-100)',
-      background: `linear-gradient(135deg, var(--color-base-100) 0%, var(--color-base-200) 100%)`
-    }}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="space-y-6 sm:space-y-8">
           <ModernCategoriesHeader 
@@ -104,7 +99,6 @@ const CategoriesPage = () => {
         </div>
       </div>
       
-      {/* Category Form Modal */}
       <ModernCategoryForm 
         isOpen={isFormOpen}
         onClose={handleCloseForm}
