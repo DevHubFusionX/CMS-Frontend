@@ -57,7 +57,7 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose = () => { } }) => {
       <aside 
         className={`
           h-screen flex flex-col
-          transition-all duration-700 ease-out
+          transition-all duration-300 ease-in-out
           transform-gpu
           ${isMobile ? (
             `fixed left-0 top-0 z-50 w-64 sm:w-72 ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'} lg:hidden`
@@ -71,7 +71,7 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose = () => { } }) => {
           background: `linear-gradient(135deg, var(--color-base-200) 0%, var(--color-base-100) 100%)`,
           borderRadius: `0 var(--radius-box) var(--radius-box) 0`,
           boxShadow: collapsed ? '0 4px 16px rgba(0, 0, 0, 0.05)' : '0 12px 40px rgba(0, 0, 0, 0.15)',
-          transition: 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease-out',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease-out',
           willChange: 'width, box-shadow'
         }}
         onMouseEnter={handleMouseEnter}

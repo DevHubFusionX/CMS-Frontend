@@ -11,9 +11,13 @@ export const AuthProvider = ({ children }) => {
     // Check if user is logged in on component mount
     const storedUser = sessionStorage.getItem('user');
     const token = sessionStorage.getItem('token');
+    console.log('AuthContext init - storedUser:', storedUser);
+    console.log('AuthContext init - token:', token);
     
     if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
+      const userData = JSON.parse(storedUser);
+      console.log('AuthContext init - setting user:', userData);
+      setUser(userData);
     } else {
       // Clear any inconsistent state
       sessionStorage.removeItem('user');

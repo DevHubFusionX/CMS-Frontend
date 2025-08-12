@@ -5,6 +5,7 @@ import ThemeToggle from '../UI/ThemeToggle';
 
 const BlogHeader = () => {
   const { user } = useAuth();
+  console.log('BlogHeader - user:', user);
 
   return (
     <header className="backdrop-blur-md border-b sticky top-0 z-50" style={{backgroundColor: 'var(--color-base-200)', borderColor: 'var(--color-base-300)', opacity: '0.95'}}>
