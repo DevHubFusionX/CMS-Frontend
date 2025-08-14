@@ -61,7 +61,11 @@ const App = () => {
             <AuthProvider>
               <SocketProvider>
                 <BrowserRouter>
-                  <Suspense fallback={<HubFusionXLoader />}>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex items-center justify-center">
+                      <HubFusionXLoader />
+                    </div>
+                  }>
                     <Routes>
                     {/* Visitor routes */}
                     <Route path="/" element={
