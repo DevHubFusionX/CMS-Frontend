@@ -8,18 +8,18 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on component mount
     const storedUser = sessionStorage.getItem('user');
     const token = sessionStorage.getItem('token');
-    console.log('AuthContext init - storedUser:', storedUser);
-    console.log('AuthContext init - token:', token);
     
     if (storedUser && token) {
-      const userData = JSON.parse(storedUser);
-      console.log('AuthContext init - setting user:', userData);
-      setUser(userData);
+      try {
+        const userData = JSON.parse(storedUser);
+        setUser(userData);
+      } catch (error) {
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+      }
     } else {
-      // Clear any inconsistent state
       sessionStorage.removeItem('user');
       sessionStorage.removeItem('token');
     }

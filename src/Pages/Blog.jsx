@@ -16,27 +16,23 @@ const Blog = () => {
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
   
   const refreshPosts = () => {
     queryClient.invalidateQueries(['posts']);
   };
 
-  const { data: postsData, isLoading: loading, error } = useQuery({
-    queryKey: ['posts', currentPage, selectedCategory, searchTerm],
+  const { data: postsData, isLoading: loading } = useQuery({
+    queryKey: ['posts', selectedCategory, searchTerm],
     queryFn: () => postsService.getAllPosts(),
     select: (data) => {
-      console.log('Posts API response:', data);
       let posts = data.data || [];
       
-      // Filter by category
       if (selectedCategory !== 'all') {
         posts = posts.filter(post => 
           post.categories?.some(cat => cat.slug === selectedCategory)
         );
       }
       
-      // Filter by search term
       if (searchTerm) {
         posts = posts.filter(post =>
           post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -49,7 +45,6 @@ const Blog = () => {
   });
 
   const posts = postsData || [];
-  console.log('Rendered posts:', posts);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
