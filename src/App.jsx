@@ -17,7 +17,7 @@ const SubscriberHome = React.lazy(() => import("./Pages/SubscriberHome"));
 const SubscriberDashboard = React.lazy(() => import("./Pages/SubscriberDashboard"));
 
 // Multi-site components
-const PlatformLanding = React.lazy(() => import("./Pages/PlatformLanding"));
+const UnifiedLanding = React.lazy(() => import("./Pages/UnifiedLanding"));
 const SitesOverview = React.lazy(() => import("./Components/Sites/SitesOverview"));
 const SiteDashboard = React.lazy(() => import("./Components/Sites/SiteDashboard"));
 
@@ -42,6 +42,7 @@ import {
 import { ThemeProvider } from "./Context/ThemeContext";
 import { NotificationProvider } from "./Context/NotificationContext";
 import { SocketProvider } from "./Context/SocketContext";
+import { SiteProvider } from "./Context/SiteContext";
 import { RoleBasedRoute } from "./Components/Auth";
 import ErrorBoundary from "./Components/Common/ErrorBoundary";
 import NotificationContainer from "./Components/Common/NotificationContainer";
@@ -64,7 +65,8 @@ const App = () => {
         <ThemeProvider>
           <NotificationProvider>
             <AuthProvider>
-              <SocketProvider>
+              <SiteProvider>
+                <SocketProvider>
                 <BrowserRouter>
                   <Suspense fallback={
                     <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: 'var(--color-base-100)'}}>
@@ -72,8 +74,8 @@ const App = () => {
                     </div>
                   }>
                     <Routes>
-                    {/* Platform Landing */}
-                    <Route path="/" element={<PlatformLanding />} />
+                    {/* Unified Landing */}
+                    <Route path="/" element={<UnifiedLanding />} />
                     
                     {/* Legacy Home Route */}
                     <Route path="/home" element={
@@ -196,7 +198,8 @@ const App = () => {
                   </Suspense>
                 </BrowserRouter>
                 <NotificationContainer />
-              </SocketProvider>
+                </SocketProvider>
+              </SiteProvider>
             </AuthProvider>
           </NotificationProvider>
         </ThemeProvider>

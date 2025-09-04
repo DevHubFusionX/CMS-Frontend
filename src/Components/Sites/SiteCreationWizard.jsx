@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useSite } from '../../Context/SiteContext';
 
 const SiteCreationWizard = ({ onClose, onSiteCreated }) => {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [subdomainChecking, setSubdomainChecking] = useState(false);
   const [subdomainAvailable, setSubdomainAvailable] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { createSite } = useSite();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -61,44 +64,25 @@ const SiteCreationWizard = ({ onClose, onSiteCreated }) => {
 
   const handleSubmit = async () => {
     if (!formData.name || !formData.subdomain || !formData.title) {
-      toast.error('Please fill in all required fields');
+      setError('Please fill in all required fields');
       return;
     }
 
     if (!subdomainAvailable) {
-      toast.error('Please choose an available subdomain');
+      setError('Please choose an available subdomain');
       return;
     }
 
     setLoading(true);
+    setError(null);
+    
     try {
-      const token = localStorage.getItem('token');
-      const csrfResponse = await fetch('/api/csrf-token');
-      const { csrfToken } = await csrfResponse.json();
-
-      const response = await fetch('/api/sites', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-          'X-CSRF-Token': csrfToken
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success('Site created successfully!');
-        onSiteCreated?.(data.data);
-        onClose();
-        navigate(`/dashboard/sites/${data.data._id}`);
-      } else {
-        toast.error(data.message || 'Failed to create site');
-      }
-    } catch (error) {
-      console.error('Error creating site:', error);
-      toast.error('Failed to create site');
+      const newSite = await createSite(formData);
+      onSiteCreated?.(newSite);
+      onClose();
+      navigate(`/sites/${newSite._id}`);
+    } catch (err) {
+      setError(err.message || 'Failed to create site');
     } finally {
       setLoading(false);
     }
@@ -240,6 +224,13 @@ const SiteCreationWizard = ({ onClose, onSiteCreated }) => {
               <span className="ml-2 font-medium">Details</span>
             </div>
           </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
 
           {/* Step Content */}
           {step === 1 && renderStep1()}
