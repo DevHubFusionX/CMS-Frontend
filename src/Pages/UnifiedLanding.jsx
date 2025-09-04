@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../Services';
 import HubFusionXLoader from '../Components/Common/HubFusionXLoader';
 import ThemeToggle from '../Components/UI/ThemeToggle';
-import SiteCreationWizard from '../Components/Sites/SiteCreationWizard';
+import EnhancedSiteCreationWizard from '../Components/Sites/EnhancedSiteCreationWizard';
 
 const UnifiedLanding = () => {
   const { user } = useAuth();
@@ -338,7 +338,7 @@ const UnifiedLanding = () => {
       {/* Site Creation Wizard */}
       <AnimatePresence>
         {showCreateWizard && (
-          <SiteCreationWizard
+          <EnhancedSiteCreationWizard
             onClose={() => setShowCreateWizard(false)}
             onSiteCreated={handleSiteCreated}
           />
