@@ -11,6 +11,7 @@ const MobileMenu = ({ isMenuOpen, user, onLogout, onCloseMenu }) => {
   
   const sidebarItems = {
     super_admin: [
+      { label: "My Sites", path: "/sites", icon: "🌐" },
       { label: "Dashboard", path: "/dashboard", icon: "🏠" },
       { label: "All Posts", path: "/dashboard/posts", icon: "📝" },
       { label: "Pages", path: "/dashboard/pages", icon: "📄" },
@@ -21,6 +22,7 @@ const MobileMenu = ({ isMenuOpen, user, onLogout, onCloseMenu }) => {
       { label: "Settings", path: "/dashboard/settings", icon: "⚙️" },
     ],
     editor: [
+      { label: "My Sites", path: "/sites", icon: "🌐" },
       { label: "Dashboard", path: "/dashboard", icon: "🏠" },
       { label: "All Posts", path: "/dashboard/posts", icon: "📝" },
       { label: "Pages", path: "/dashboard/pages", icon: "📄" },
@@ -29,12 +31,14 @@ const MobileMenu = ({ isMenuOpen, user, onLogout, onCloseMenu }) => {
       { label: "Analytics", path: "/dashboard/analytics", icon: "📊" },
     ],
     author: [
+      { label: "My Sites", path: "/sites", icon: "🌐" },
       { label: "Dashboard", path: "/dashboard", icon: "🏠" },
       { label: "My Posts", path: "/dashboard/posts/my", icon: "📝" },
       { label: "Add Post", path: "/dashboard/posts", icon: "➕" },
       { label: "Media", path: "/dashboard/media", icon: "🖼️" },
     ],
     contributor: [
+      { label: "My Sites", path: "/sites", icon: "🌐" },
       { label: "Dashboard", path: "/dashboard", icon: "🏠" },
       { label: "My Drafts", path: "/dashboard/posts/my", icon: "📝" },
       { label: "Add Draft", path: "/dashboard/posts", icon: "➕" },
@@ -82,8 +86,8 @@ const MobileMenu = ({ isMenuOpen, user, onLogout, onCloseMenu }) => {
           }`}
           onClick={onCloseMenu}
         >
-          <span className="mr-3">🏠</span>
-          Home
+          <span className="mr-3">🚀</span>
+          Platform
         </Link>
         
         {user && (

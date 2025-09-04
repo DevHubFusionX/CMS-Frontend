@@ -7,8 +7,7 @@ const CategoriesStats = ({ stats }) => {
       title: 'Total Categories',
       value: stats.total,
       icon: FiFolder,
-      color: 'from-blue-500 to-blue-600',
-      bgColor: 'from-blue-50 to-blue-100',
+      colorVar: '--color-primary',
       change: '+12%',
       changeType: 'positive'
     },
@@ -16,8 +15,7 @@ const CategoriesStats = ({ stats }) => {
       title: 'Active Categories',
       value: stats.active,
       icon: FiTrendingUp,
-      color: 'from-green-500 to-green-600',
-      bgColor: 'from-green-50 to-green-100',
+      colorVar: '--color-success',
       change: '+8%',
       changeType: 'positive'
     },
@@ -25,8 +23,7 @@ const CategoriesStats = ({ stats }) => {
       title: 'Total Posts',
       value: stats.postsCount,
       icon: FiFileText,
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'from-purple-50 to-purple-100',
+      colorVar: '--color-secondary',
       change: '+23%',
       changeType: 'positive'
     },
@@ -34,8 +31,7 @@ const CategoriesStats = ({ stats }) => {
       title: 'Most Popular',
       value: stats.mostPopular,
       icon: FiStar,
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'from-orange-50 to-orange-100',
+      colorVar: '--color-accent',
       isText: true
     }
   ];
@@ -45,34 +41,61 @@ const CategoriesStats = ({ stats }) => {
       {statCards.map((stat, index) => (
         <div
           key={index}
-          className={`relative overflow-hidden bg-gradient-to-br ${stat.bgColor} rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1`}
+          className="relative overflow-hidden rounded-xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
+          style={{ 
+            backgroundColor: 'var(--color-base-200)',
+            border: `1px solid var(--color-base-300)`
+          }}
         >
           <div className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600 mb-1">
+                <p 
+                  className="text-sm font-medium mb-1 opacity-70"
+                  style={{ color: 'var(--color-base-content)' }}
+                >
                   {stat.title}
                 </p>
-                <p className={`text-2xl font-bold ${stat.isText ? 'text-lg' : ''} text-gray-900 truncate`}>
+                <p 
+                  className={`text-2xl font-bold ${stat.isText ? 'text-lg' : ''} truncate`}
+                  style={{ color: 'var(--color-base-content)' }}
+                >
                   {stat.value}
                 </p>
                 {stat.change && (
                   <div className="flex items-center mt-2">
-                    <span className={`text-xs font-medium ${
-                      stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-                    }`}>
+                    <span 
+                      className="text-xs font-medium"
+                      style={{ 
+                        color: stat.changeType === 'positive' ? 'var(--color-success)' : 'var(--color-error)' 
+                      }}
+                    >
                       {stat.change}
                     </span>
-                    <span className="text-xs text-gray-500 ml-1">vs last month</span>
+                    <span 
+                      className="text-xs ml-1 opacity-60"
+                      style={{ color: 'var(--color-base-content)' }}
+                    >
+                      vs last month
+                    </span>
                   </div>
                 )}
               </div>
-              <div className={`p-3 bg-gradient-to-br ${stat.color} rounded-lg shadow-lg`}>
-                <stat.icon className="h-6 w-6 text-white" />
+              <div 
+                className="p-3 rounded-lg shadow-lg"
+                style={{ backgroundColor: `var(${stat.colorVar})` }}
+              >
+                <stat.icon 
+                  className="h-6 w-6" 
+                  style={{ color: `var(${stat.colorVar}-content)` }}
+                />
               </div>
             </div>
           </div>
-          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.color}`}></div>
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-1"
+            style={{ backgroundColor: `var(${stat.colorVar})` }}
+          ></div>
         </div>
       ))}
     </div>

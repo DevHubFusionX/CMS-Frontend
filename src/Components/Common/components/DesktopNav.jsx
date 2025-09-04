@@ -12,11 +12,17 @@ const DesktopNav = ({ user }) => {
         to="/" 
         className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${isActive('/') ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
       >
-        Home
+        Platform
       </Link>
       
       {user && (
         <>
+          <Link 
+            to="/sites" 
+            className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${location.pathname.includes('/sites') ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
+          >
+            My Sites
+          </Link>
           <Link 
             to="/dashboard" 
             className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${isActive('/dashboard') ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
@@ -29,14 +35,15 @@ const DesktopNav = ({ user }) => {
           >
             Posts
           </Link>
-          <Link 
-            to="/dashboard/users" 
-            className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${location.pathname.includes('/users') ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
-          >
-            Users
-          </Link>
         </>
       )}
+      
+      <Link 
+        to="/blog" 
+        className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${location.pathname.includes('/blog') ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'}`}
+      >
+        Blog
+      </Link>
     </div>
   );
 };

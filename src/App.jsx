@@ -16,6 +16,11 @@ const PreviewPost = React.lazy(() => import("./Pages/Posts").then(module => ({ d
 const SubscriberHome = React.lazy(() => import("./Pages/SubscriberHome"));
 const SubscriberDashboard = React.lazy(() => import("./Pages/SubscriberDashboard"));
 
+// Multi-site components
+const PlatformLanding = React.lazy(() => import("./Pages/PlatformLanding"));
+const SitesOverview = React.lazy(() => import("./Components/Sites/SitesOverview"));
+const SiteDashboard = React.lazy(() => import("./Components/Sites/SiteDashboard"));
+
 // Lazy load all remaining pages
 const Login = React.lazy(() => import("./Pages/Login"));
 const Register = React.lazy(() => import("./Pages/Register"));
@@ -67,8 +72,11 @@ const App = () => {
                     </div>
                   }>
                     <Routes>
-                    {/* Visitor routes */}
-                    <Route path="/" element={
+                    {/* Platform Landing */}
+                    <Route path="/" element={<PlatformLanding />} />
+                    
+                    {/* Legacy Home Route */}
+                    <Route path="/home" element={
                       <RoleBasedRoute allowedRoles={['visitor', 'subscriber', 'contributor', 'author', 'editor', 'admin', 'super_admin']}>
                         <Home />
                       </RoleBasedRoute>
@@ -138,6 +146,19 @@ const App = () => {
                         <UsersProvider>
                           <ProfilePage />
                         </UsersProvider>
+                      </RoleBasedRoute>
+                    } />
+
+                    {/* Sites Management */}
+                    <Route path="/sites" element={
+                      <RoleBasedRoute allowedRoles={['contributor', 'author', 'editor', 'admin', 'super_admin']}>
+                        <SitesOverview />
+                      </RoleBasedRoute>
+                    } />
+                    
+                    <Route path="/sites/:siteId" element={
+                      <RoleBasedRoute allowedRoles={['contributor', 'author', 'editor', 'admin', 'super_admin']}>
+                        <SiteDashboard />
                       </RoleBasedRoute>
                     } />
 
