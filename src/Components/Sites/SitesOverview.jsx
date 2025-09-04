@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSite } from '../../Context/SiteContext';
 import { useAuth } from '../../Services';
-import SiteCreationWizard from './SiteCreationWizard';
+import EnhancedSiteCreationWizard from './EnhancedSiteCreationWizard';
 import HubFusionXLoader from '../Common/HubFusionXLoader';
 
 const SitesOverview = () => {
@@ -334,7 +334,7 @@ const SitesOverview = () => {
       {/* Create Site Wizard with Backdrop Blur */}
       <AnimatePresence>
         {showCreateWizard && (
-          <SiteCreationWizard
+          <EnhancedSiteCreationWizard
             onClose={() => setShowCreateWizard(false)}
             onSiteCreated={() => {
               setShowCreateWizard(false);
